@@ -1,10 +1,14 @@
 package com.example.survey.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+@Getter     //lombok
+@Setter     //lombok
 @Entity                         //can't be named user as it's PostgreSQL reserved word
 public class RegisteredUser {   //changed from User to RegisteredUser
 
@@ -26,37 +30,5 @@ public class RegisteredUser {   //changed from User to RegisteredUser
         this.login = login;
         this.mail = mail;
         this.isActive = isActive;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 }
