@@ -17,6 +17,7 @@ public class RegisteredUserController {
 
     @GetMapping
     public ResponseEntity getAllUsers() {
+
         return ResponseEntity.ok(this.registeredUserRepository.findAll());
     }
 }
