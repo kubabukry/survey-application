@@ -1,23 +1,26 @@
 package com.example.survey.controller;
 
-import com.example.survey.repository.RegisteredUserRepository;
-import org.springframework.http.ResponseEntity;
+import com.example.survey.model.RegisteredUser;
+import com.example.survey.service.RegisteredUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/user")
+@RequiredArgsConstructor
 public class RegisteredUserController {
-    private final RegisteredUserRepository registeredUserRepository;
 
-    public RegisteredUserController(RegisteredUserRepository registeredUserRepository) {
-        this.registeredUserRepository = registeredUserRepository;
+    private final RegisteredUserService registeredUserService;
+    @GetMapping("/users")
+    public List<RegisteredUser> getUsers() {
+        return registeredUserService.getUsers();
     }
-
-    @GetMapping
-    public ResponseEntity getAllUsers() {
-
-        return ResponseEntity.ok(this.registeredUserRepository.findAll());
+    @PostMapping("/users")
+    public RegisteredUser addUser(@RequestBody RegisteredUser registeredUser){
+        return registeredUserService.addUser(registeredUser);
     }
 }

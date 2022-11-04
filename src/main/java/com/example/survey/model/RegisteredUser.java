@@ -1,18 +1,22 @@
 package com.example.survey.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter     //lombok
 @Setter     //lombok
+@Table
 @Entity                         //can't be named user as it's PostgreSQL reserved word
 public class RegisteredUser {   //changed from User to RegisteredUser
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -21,14 +25,6 @@ public class RegisteredUser {   //changed from User to RegisteredUser
     private String mail;
 
     private boolean isActive;   //boolean not Boolean because isActive will be
-                                //predefined as false
-
-    public RegisteredUser(){}
-
-    public RegisteredUser(Long id, String login, String mail, boolean isActive) {
-        this.id = id;
-        this.login = login;
-        this.mail = mail;
-        this.isActive = isActive;
-    }
+    @OneToOne(mappedBy = "idUser")
+    private Company company;
 }
