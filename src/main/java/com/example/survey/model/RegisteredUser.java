@@ -25,6 +25,4 @@ public class RegisteredUser {   //changed from User to RegisteredUser
     private String mail;
 
     private boolean isActive;   //boolean not Boolean because isActive will be
-    @OneToOne(mappedBy = "idUser")
-    private Company company;
 }
