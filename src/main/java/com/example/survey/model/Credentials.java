@@ -7,32 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter
-@Getter
 @Entity
 @Table
-public class Company {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Credentials implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @NotNull
-    private String name;
-
-    @NotNull
-    private Long nip;
-
-    @NotNull
-    private String address;
-
-    @NotNull
-    private Boolean isVerified;
-
     @OneToOne
     @JoinColumn(name = "idUser", referencedColumnName = "id")
     private RegisteredUser idUser;
+
+    @NotNull
+    private String password;
 }

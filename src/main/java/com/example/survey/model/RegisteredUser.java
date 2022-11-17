@@ -1,5 +1,6 @@
 package com.example.survey.model;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +21,20 @@ public class RegisteredUser {   //changed from User to RegisteredUser
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
     private String login;
 
+    @NotNull
+    private String name;
+
+    @NotNull
     private String mail;
 
-    private boolean isActive;   //boolean not Boolean because isActive will be
+    @NotNull
+    private Boolean isActive;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Role role;
+
 }

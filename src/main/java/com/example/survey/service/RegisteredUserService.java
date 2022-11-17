@@ -17,4 +17,9 @@ public class RegisteredUserService {
     public RegisteredUser addUser(RegisteredUser registeredUser){
         return registeredUserRepository.save(registeredUser);
     }
+
+    public RegisteredUser getSingleUser(Long id) {
+        return registeredUserRepository.findById(id)
+                .orElseThrow();                     //NoSuchElementException if no value found
+    }
 }
