@@ -7,36 +7,30 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
+@Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
-@Entity
-@Table
-public class Company {
+public class SurveyAnswer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull
-    private String name;
+    private Integer rating;
 
-    @NotNull
-    private Long nip;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idCompanySurvey", referencedColumnName = "id")
+    private CompanySurvey companySurvey;
 
-    @NotNull
-    private String address;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idQuestion", referencedColumnName = "id")
+    private Question question;
 
-    @NotNull
-    private Boolean isVerified;
-
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUser", referencedColumnName = "id")
     private RegisteredUser idUser;
-
-    @OneToMany(mappedBy = "company")
-    private List<CompanySurvey> companySurveyList;
 }

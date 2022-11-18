@@ -17,9 +17,12 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Credentials implements Serializable {
 
-    @Id
-    @OneToOne
-    @JoinColumn(name = "idUser", referencedColumnName = "id")
+    @Id             //klucze nie są generowane tylko pobierane z idUser
+    @Column(name = "idUser")
+    private Long id;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "id_user", referencedColumnName = "id")
+    @MapsId         //primary key kopiowany od usera
     private RegisteredUser idUser;
 
     @NotNull

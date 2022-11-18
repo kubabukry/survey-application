@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +18,6 @@ import javax.persistence.*;
 public class RegisteredUser {   //changed from User to RegisteredUser
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -33,8 +33,14 @@ public class RegisteredUser {   //changed from User to RegisteredUser
     @NotNull
     private Boolean isActive;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idRole", referencedColumnName = "id")
     private Role role;
 
+    @OneToMany(mappedBy = "idUser")      //do sprawdzenia
+    private List<SurveyAnswer> surveyAnswerList;
+
+    @OneToOne(mappedBy = "idUser", optional = false)
+    @PrimaryKeyJoinColumn
+    private Credentials credentials;
 }

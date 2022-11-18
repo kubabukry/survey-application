@@ -9,13 +9,12 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
-@Entity
-@Table
-public class Company {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,18 +24,8 @@ public class Company {
     private String name;
 
     @NotNull
-    private Long nip;
+    private String description;
 
-    @NotNull
-    private String address;
-
-    @NotNull
-    private Boolean isVerified;
-
-    @OneToOne
-    @JoinColumn(name = "idUser", referencedColumnName = "id")
-    private RegisteredUser idUser;
-
-    @OneToMany(mappedBy = "company")
-    private List<CompanySurvey> companySurveyList;
+    @OneToMany(mappedBy = "category")
+    private List<SurveyTemplate> surveyTemplateList;
 }
