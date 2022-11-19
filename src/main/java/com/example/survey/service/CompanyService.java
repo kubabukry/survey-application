@@ -19,4 +19,11 @@ public class CompanyService {
     public Company addCompany(Company company) {
         return companyRepository.save(company);
     }
+
+    //getCompany()
+    //deleteCompany()
+    //updateCompany()
+    //verifyCompany()
+    //createCompany()
+    //addSurvey()
 }
