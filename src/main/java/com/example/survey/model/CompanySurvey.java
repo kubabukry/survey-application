@@ -1,6 +1,5 @@
 package com.example.survey.model;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,20 +16,17 @@ import java.util.List;
 public class CompanySurvey {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_surveyTemplate", referencedColumnName = "id")
     private SurveyTemplate surveyTemplate;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_company")
     private Company company;
 
-    @NotNull
     private Boolean isHidden;
 
     @OneToMany(mappedBy = "companySurvey")

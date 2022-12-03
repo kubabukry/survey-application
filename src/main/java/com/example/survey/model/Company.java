@@ -1,6 +1,5 @@
 package com.example.survey.model;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,19 +17,15 @@ import java.util.List;
 public class Company {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //zmienione po sugestii snowflake
     private Long id;
 
-    @NotNull
     private String name;
 
-    @NotNull
     private Long nip;
 
-    @NotNull
     private String address;
 
-    @NotNull
     private Boolean isVerified;
 
     @OneToOne

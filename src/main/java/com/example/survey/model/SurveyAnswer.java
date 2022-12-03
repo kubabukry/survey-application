@@ -1,6 +1,5 @@
 package com.example.survey.model;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +15,9 @@ import javax.persistence.*;
 public class SurveyAnswer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private Integer rating;
 
     @ManyToOne(fetch = FetchType.LAZY)

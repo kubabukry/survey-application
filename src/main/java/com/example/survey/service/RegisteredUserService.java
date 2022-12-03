@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-@RequiredArgsConstructor        //lombok feature
+@RequiredArgsConstructor
 public class RegisteredUserService {
     private final RegisteredUserRepository registeredUserRepository;
 
@@ -29,7 +29,6 @@ public class RegisteredUserService {
         return registeredUserRepository.findById(id)
                 .orElseThrow();                     //NoSuchElementException if no value found
     }
-
     //getRegisteredUser()
     //updateRegisteredUser()
     //deleteRegisteredUser()

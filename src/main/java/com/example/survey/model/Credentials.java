@@ -1,6 +1,5 @@
 package com.example.survey.model;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +24,5 @@ public class Credentials implements Serializable {
     @MapsId         //primary key kopiowany od usera
     private RegisteredUser idUser;
 
-    @NotNull
     private String password;
 }
