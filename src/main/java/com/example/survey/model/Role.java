@@ -1,5 +1,6 @@
 package com.example.survey.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,6 @@ public class Role {
     private String name;
 
     @OneToMany(mappedBy = "role")
+    @JsonManagedReference
     private List<RegisteredUser> registeredUserList;
 }

@@ -1,5 +1,6 @@
 package com.example.survey.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class Credentials implements Serializable {
     @OneToOne(optional = false)
     @JoinColumn(name = "id_user", referencedColumnName = "id")
     @MapsId         //primary key kopiowany od usera
+    @JsonBackReference
     private RegisteredUser idUser;
 
     private String password;

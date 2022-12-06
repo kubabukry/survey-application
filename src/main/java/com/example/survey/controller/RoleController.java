@@ -10,4 +10,5 @@ public class RoleController {
     public RoleController(RoleService roleService) {
         this.roleService = roleService;
     }
+    
 }

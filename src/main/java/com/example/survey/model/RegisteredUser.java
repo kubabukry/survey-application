@@ -1,5 +1,8 @@
 package com.example.survey.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,12 +33,15 @@ public class RegisteredUser {   //changed from User to RegisteredUser
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idRole", referencedColumnName = "id")
+    @JsonBackReference
     private Role role;
 
     @OneToMany(mappedBy = "idUser")      //do sprawdzenia
+    @JsonIgnore
     private List<SurveyAnswer> surveyAnswerList;
 
     @OneToOne(mappedBy = "idUser", optional = false)
     @PrimaryKeyJoinColumn
+    @JsonManagedReference
     private Credentials credentials;
 }

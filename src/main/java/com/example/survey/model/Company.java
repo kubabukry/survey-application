@@ -1,5 +1,6 @@
 package com.example.survey.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Company {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //zmienione po sugestii snowflake
+    @GeneratedValue(strategy = GenerationType.AUTO) //zmienione po sugestii snowflake
     private Long id;
 
     private String name;
@@ -29,9 +30,10 @@ public class Company {
     private Boolean isVerified;
 
     @OneToOne
-    @JoinColumn(name = "idUser", referencedColumnName = "id")
+    @JoinColumn(name = "idUser", referencedColumnName = "id", updatable = false, insertable = false)
     private RegisteredUser idUser;
 
     @OneToMany(mappedBy = "company")
+    @JsonIgnore
     private List<CompanySurvey> companySurveyList;
 }

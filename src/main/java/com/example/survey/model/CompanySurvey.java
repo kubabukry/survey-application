@@ -1,5 +1,7 @@
 package com.example.survey.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,14 +23,17 @@ public class CompanySurvey {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_surveyTemplate", referencedColumnName = "id")
+    @JsonBackReference
     private SurveyTemplate surveyTemplate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_company")
+    @JsonBackReference
     private Company company;
 
     private Boolean isHidden;
 
     @OneToMany(mappedBy = "companySurvey")
+    @JsonIgnore
     private List<SurveyAnswer> surveyAnswerList;
 }

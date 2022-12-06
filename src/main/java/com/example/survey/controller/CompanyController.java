@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 public class CompanyController {
 
-    private final CompanyService companyService;
+    private CompanyService companyService;
 
     public CompanyController(CompanyService companyService) {
         this.companyService = companyService;
@@ -24,7 +24,7 @@ public class CompanyController {
     }
 
     @PostMapping("/companys")
-    public Company addCompany(@RequestBody Company company){
-        return companyService.addCompany(company);
+    public void addCompany(@RequestBody Company company){
+        companyService.addCompany(company);
     }
 }
