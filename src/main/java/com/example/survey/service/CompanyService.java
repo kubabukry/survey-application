@@ -24,6 +24,6 @@ public class CompanyService {
     //deleteCompany()
     //updateCompany()
     //verifyCompany()
-    //createCompany()
+    //createCompany(): addCompany()
     //addSurvey()
 }
