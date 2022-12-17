@@ -1,6 +1,8 @@
 package com.example.survey.controller;
 
+import com.example.survey.dto.CredentialsDto;
 import com.example.survey.dto.RegisteredUserDto;
+import com.example.survey.dto.RegisteredUserRegistrationDto;
 import com.example.survey.model.RegisteredUser;
 import com.example.survey.service.RegisteredUserService;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,7 @@ public class RegisteredUserController {
         return mapRegisteredUserToRegisteredUserDto(registeredUserService.getSingleUser(id));
     }
     @PostMapping("/users")
-    public RegisteredUser addUser(@RequestBody RegisteredUser registeredUser){
-        return registeredUserService.addUser(registeredUser);
+    public RegisteredUserDto addUser(@RequestBody RegisteredUserRegistrationDto registeredUserRegistrationDto){
+        return mapRegisteredUserToRegisteredUserDto(registeredUserService.addUser(registeredUserRegistrationDto));
     }
 }

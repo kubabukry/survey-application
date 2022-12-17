@@ -1,6 +1,9 @@
 package com.example.survey.service;
 
+import com.example.survey.dto.RegisteredUserRegistrationDto;
+import com.example.survey.model.Credentials;
 import com.example.survey.model.RegisteredUser;
+import com.example.survey.model.Role;
 import com.example.survey.repository.CredentialsRepository;
 import com.example.survey.repository.RegisteredUserRepository;
 import com.example.survey.repository.RoleRepository;
@@ -21,18 +24,35 @@ public class RegisteredUserService {
         return registeredUserRepository.findAll();
     }
 
-    public RegisteredUser addUser(RegisteredUser registeredUser){
-        return registeredUserRepository.save(registeredUser);
+    public RegisteredUser addUser(RegisteredUserRegistrationDto registeredUserRegistrationDto){
+        RegisteredUser registeredUser = new RegisteredUser();
+
+        Role role = roleRepository.findDistinctByName("registered_user");
+        Credentials credentials = new Credentials();
+
+        registeredUser.setLogin(registeredUserRegistrationDto.login());
+        registeredUser.setName(registeredUserRegistrationDto.name());
+        registeredUser.setMail(registeredUserRegistrationDto.mail());
+        registeredUser.setIsActive(false);
+        registeredUser.setRole(role);
+        //credentials.setPassword(registeredUserRegistrationDto.password());
+        registeredUser.setCredentials(credentials);
+        RegisteredUser savedUser = registeredUserRepository.save(registeredUser);
+
+
+        return savedUser;
     }
 
     public RegisteredUser getSingleUser(Long id) {
         return registeredUserRepository.findById(id)
                 .orElseThrow();                     //NoSuchElementException if no value found
     }
-    //getRegisteredUser()
+
+
+    //getRegisteredUser(): getSingleUser() +
     //updateRegisteredUser()
     //deleteRegisteredUser()
-    //createRegisteredUser()
+    //createRegisteredUser(): addUser() credentials trzeba zapisac przed przypisaniem
     //activateRegisteredUser()
     //changePassword()
     //login()

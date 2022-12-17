@@ -17,7 +17,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Credentials implements Serializable {
 
-    @Id             //klucze nie są generowane tylko pobierane z idUser
+    //todo umiescic haslo w userze
+    @Id                         //klucze nie są generowane tylko pobierane z idUser
     @Column(name = "idUser")
     private Long id;
     @OneToOne(optional = false)

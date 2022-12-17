@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Role findDistinctByName(String name);
+    Role findDistinctById(Long id);
 }

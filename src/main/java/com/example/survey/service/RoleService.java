@@ -1,7 +1,9 @@
 package com.example.survey.service;
 
-import com.example.survey.dto.RoleNameDto;
+import com.example.survey.dto.*;
+import com.example.survey.model.RegisteredUser;
 import com.example.survey.model.Role;
+import com.example.survey.repository.RegisteredUserRepository;
 import com.example.survey.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.List;
 public class RoleService {
 
     private final RoleRepository roleRepository;
+    private final RegisteredUserRepository registeredUserRepository;
 
     public Role addRole(RoleNameDto roleNameDto) {
         Role role = new Role();
@@ -28,11 +31,32 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    //setRegisteredUserRole()
+    public void deleteRole(Long id){
+        roleRepository.deleteById(id);
+    }
+
+    public Role updateRole(RoleDto roleDto) {
+        Role role = new Role();
+        role.setId(roleDto.id());
+        role.setName(roleDto.name());
+        return roleRepository.save(role);
+    }
+
+    public RegisteredUser setRegisteredUserRole(RegisteredUserRoleDto registeredUserRoleDto){
+        RegisteredUser registeredUser = registeredUserRepository.findDistinctById(registeredUserRoleDto.userId());
+        Role role = roleRepository.findDistinctById(registeredUserRoleDto.roleId());
+        registeredUser.setRole(role);
+        return registeredUserRepository.save(registeredUser);
+    }
+
+
+    //zrobic obsluge bledow
+
+    //setRegisteredUserRole() ?? dodawanie po samym id albo nazwie?
     //createRole(): addRole() +
-    //updateRole()
-    //deleteRole():
+    //updateRole() +
+    //deleteRole() +
     //getRole(): getSingleRole() +
 
-    //dodatkowo getRoles()
+    //dodatkowo getRoles() +
 }
