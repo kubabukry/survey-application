@@ -1,62 +1,48 @@
 package com.example.survey.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.lang.Nullable;
 
+import javax.persistence.*;
+import java.util.List;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter     //lombok
+@Setter     //lombok
+@Table
 @Entity                         //can't be named user as it's PostgreSQL reserved word
 public class RegisteredUser {   //changed from User to RegisteredUser
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String login;
 
+    private String name;
+
     private String mail;
 
-    private boolean isActive;   //boolean not Boolean because isActive will be
-                                //predefined as false
+    private Boolean isActive;
 
-    public RegisteredUser(){}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idRole", referencedColumnName = "id")
+    @JsonBackReference
+    private Role role;
 
-    public RegisteredUser(Long id, String login, String mail, boolean isActive) {
-        this.id = id;
-        this.login = login;
-        this.mail = mail;
-        this.isActive = isActive;
-    }
+    @OneToMany(mappedBy = "idUser")      //do sprawdzenia
+    @JsonIgnore
+    private List<SurveyAnswer> surveyAnswerList;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
+    @OneToOne(mappedBy = "idUser", optional = false)
+    @PrimaryKeyJoinColumn
+    @JsonManagedReference
+    private Credentials credentials;
 }

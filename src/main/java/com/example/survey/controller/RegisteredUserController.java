@@ -1,22 +1,35 @@
 package com.example.survey.controller;
 
-import com.example.survey.repository.RegisteredUserRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.survey.dto.CredentialsDto;
+import com.example.survey.dto.RegisteredUserDto;
+import com.example.survey.dto.RegisteredUserRegistrationDto;
+import com.example.survey.model.RegisteredUser;
+import com.example.survey.service.RegisteredUserService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static com.example.survey.mapper.RegisteredUserDtoMapper.mapRegisteredUserToRegisteredUserDto;
+import static com.example.survey.mapper.RegisteredUserDtoMapper.mapRegisteredUserToRegisteredUserDtoList;
 
 @RestController
-@RequestMapping("/user")
 public class RegisteredUserController {
-    private final RegisteredUserRepository registeredUserRepository;
-
-    public RegisteredUserController(RegisteredUserRepository registeredUserRepository) {
-        this.registeredUserRepository = registeredUserRepository;
+    private final RegisteredUserService registeredUserService;
+    public RegisteredUserController(RegisteredUserService registeredUserService) {
+        this.registeredUserService = registeredUserService;
     }
 
-    @GetMapping
-    public ResponseEntity getAllUsers() {
-        return ResponseEntity.ok(this.registeredUserRepository.findAll());
+    @GetMapping("/users")
+    public List<RegisteredUserDto> getUsers() {
+        return mapRegisteredUserToRegisteredUserDtoList(registeredUserService.getUsers());
+    }
+
+    @GetMapping("/users/{id}")
+    public RegisteredUserDto getSingleUser(@PathVariable Long id) {
+        return mapRegisteredUserToRegisteredUserDto(registeredUserService.getSingleUser(id));
+    }
+    @PostMapping("/users")
+    public RegisteredUserDto addUser(@RequestBody RegisteredUserRegistrationDto registeredUserRegistrationDto){
+        return mapRegisteredUserToRegisteredUserDto(registeredUserService.addUser(registeredUserRegistrationDto));
     }
 }
