@@ -1,10 +1,11 @@
 package com.example.survey.service;
 
+import com.example.survey.dto.RegisteredUserActivationDto;
+import com.example.survey.dto.RegisteredUserChangePasswordDto;
+import com.example.survey.dto.RegisteredUserDto;
 import com.example.survey.dto.RegisteredUserRegistrationDto;
-import com.example.survey.model.Credentials;
 import com.example.survey.model.RegisteredUser;
 import com.example.survey.model.Role;
-import com.example.survey.repository.CredentialsRepository;
 import com.example.survey.repository.RegisteredUserRepository;
 import com.example.survey.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,46 +16,77 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RegisteredUserService {
     private final RegisteredUserRepository registeredUserRepository;
-
-    private final CredentialsRepository credentialsRepository;
-
     private final RoleRepository roleRepository;
 
-    public List<RegisteredUser> getUsers() {
+    public List<RegisteredUser> getRegisteredUsers() {
         return registeredUserRepository.findAll();
     }
 
-    public RegisteredUser addUser(RegisteredUserRegistrationDto registeredUserRegistrationDto){
+    public RegisteredUser addRegisteredUser(RegisteredUserRegistrationDto registeredUserRegistrationDto){
         RegisteredUser registeredUser = new RegisteredUser();
-
         Role role = roleRepository.findDistinctByName("registered_user");
-        Credentials credentials = new Credentials();
 
         registeredUser.setLogin(registeredUserRegistrationDto.login());
+        registeredUser.setPassword(registeredUserRegistrationDto.password());
         registeredUser.setName(registeredUserRegistrationDto.name());
         registeredUser.setMail(registeredUserRegistrationDto.mail());
         registeredUser.setIsActive(false);
         registeredUser.setRole(role);
-        //credentials.setPassword(registeredUserRegistrationDto.password());
-        registeredUser.setCredentials(credentials);
-        RegisteredUser savedUser = registeredUserRepository.save(registeredUser);
 
+        RegisteredUser savedUser = registeredUserRepository.save(registeredUser);
 
         return savedUser;
     }
 
-    public RegisteredUser getSingleUser(Long id) {
+    public RegisteredUser getSingleRegisteredUser(Long id) {
         return registeredUserRepository.findById(id)
-                .orElseThrow();                     //NoSuchElementException if no value found
+                .orElseThrow();                             //dopisac obsluge reszty bledow
+    }
+
+    public RegisteredUser updateRegisteredUser(RegisteredUserDto registeredUserDto) {
+        RegisteredUser registeredUser = new RegisteredUser();
+        Role role = roleRepository.findDistinctByName(registeredUserDto.roleName());
+
+        registeredUser.setId(registeredUserDto.id());
+        registeredUser.setLogin(registeredUserDto.login());
+        registeredUser.setPassword(registeredUserRepository.findDistinctById(registeredUserDto.id()).getPassword());
+
+        registeredUser.setName(registeredUserDto.name());
+        registeredUser.setMail(registeredUserDto.mail());
+        registeredUser.setIsActive(registeredUserDto.isActive());
+        registeredUser.setRole(role);
+
+        return registeredUserRepository.save(registeredUser);
+    }
+
+    public void deleteRegisteredUser(Long id) {
+        registeredUserRepository.deleteById(id);
+    }
+
+    public void activateRegisteredUser(RegisteredUserActivationDto registeredUserActivationDto) {
+        RegisteredUser registeredUser = registeredUserRepository.findDistinctById(registeredUserActivationDto.id());
+        registeredUser.setIsActive(registeredUserActivationDto.isActive());
+
+        registeredUserRepository.save(registeredUser);
+
+    }
+
+    public void changePassword(RegisteredUserChangePasswordDto registeredUserChangePasswordDto) {
+        RegisteredUser registeredUser = registeredUserRepository.findDistinctById(registeredUserChangePasswordDto.id());
+        registeredUser.setPassword(registeredUserChangePasswordDto.password());
+
+        registeredUserRepository.save(registeredUser);
     }
 
 
-    //getRegisteredUser(): getSingleUser() +
-    //updateRegisteredUser()
-    //deleteRegisteredUser()
-    //createRegisteredUser(): addUser() credentials trzeba zapisac przed przypisaniem
-    //activateRegisteredUser()
-    //changePassword()
+    //getRegisteredUser(): getSingleRegisteredUser() +
+    //updateRegisteredUser() +
+    //deleteRegisteredUser() +
+    //createRegisteredUser(): addRegisteredUser()+
+    //activateRegisteredUser() +
+    //changePassword() +
     //login()
     //setCompany()
+
+    //todo dodac validacje pol i obsluge bledow
 }

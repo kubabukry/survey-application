@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class SurveyAnswer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private Integer rating;

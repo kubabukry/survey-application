@@ -50,7 +50,7 @@ public class RoleService {
     }
 
 
-    //zrobic obsluge bledow
+    //todo zrobic obsluge wyjatkow
 
     //setRegisteredUserRole() ?? dodawanie po samym id albo nazwie?
     //createRole(): addRole() +

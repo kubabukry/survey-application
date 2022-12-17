@@ -1,13 +1,14 @@
 package com.example.survey.controller;
 
+import com.example.survey.dto.CategoryCreationDto;
+import com.example.survey.dto.CategoryDto;
 import com.example.survey.model.Category;
 import com.example.survey.service.CategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.example.survey.mapper.CategoryMapper.*;
 
 @RestController
 public class CategoryController {
@@ -17,12 +18,27 @@ public class CategoryController {
     }
 
     @GetMapping("/categories")
-    public List<Category> getCategories(){
-        return categoryService.getCategories();
+    public List<CategoryDto> getCategories(){
+        return mapCategoryListToCategoryDtoList(categoryService.getCategories());
     }
 
-    @PostMapping("categories")
-    public Category createCategory(@RequestBody Category category){
-        return categoryService.createCategory(category);
+    @GetMapping("/categories/{id}")
+    public CategoryDto getSingleCategory(@PathVariable Long id){
+        return mapCategoryToCategoryDto(categoryService.getCategory(id));
+    }
+
+    @PostMapping("/categories")
+    public CategoryCreationDto createCategory(@RequestBody CategoryCreationDto categoryCreationDto){
+        return mapCategoryToCategoryCreationDto(categoryService.createCategory(categoryCreationDto));
+    }
+
+    @DeleteMapping("/categories/{id}")
+    public void deleteCategory(@PathVariable Long id){
+        categoryService.deleteCategory(id);
+    }
+
+    @PutMapping("/category/{id}")
+    public Category updateCategory(@RequestBody CategoryDto categoryDto){
+        return categoryService.updateCategory(categoryDto);
     }
 }

@@ -40,14 +40,16 @@ public class RoleController {
         roleService.deleteRole(id);
     }
 
-    @PutMapping("roles/{id}")
+    @PutMapping("/roles/{id}")
     public void updateRole(@RequestBody RoleDto roleDto){
         roleService.updateRole(roleDto);
     }
 
-    @PutMapping("roles/user")       //jaki endpoint?
+    @PutMapping("/roles/user")       //jaki endpoint?
     public void setRegisteredUserRole(@RequestBody RegisteredUserRoleDto registeredUserRoleDto){
         roleService.setRegisteredUserRole(registeredUserRoleDto);
     }
+
+    //todo sprawdzic endpointy
 
 }

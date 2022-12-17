@@ -1,7 +1,6 @@
 package com.example.survey.mapper;
 
 import com.example.survey.dto.RegisteredUserDto;
-import com.example.survey.dto.RegisteredUserRoleDto;
 import com.example.survey.model.RegisteredUser;
 
 import java.util.List;
@@ -29,13 +28,5 @@ public class RegisteredUserDtoMapper {
                 registeredUser.getMail(),
                 registeredUser.getIsActive(),
                 registeredUser.getRole().getName());
-    }
-
-    //poki co zbedne
-    public static RegisteredUserRoleDto mapRegisteredUserToRegisteredUserRoleDto(RegisteredUser registeredUser){
-        return new RegisteredUserRoleDto(
-                registeredUser.getId(),
-                registeredUser.getRole().getId()
-        );
     }
 }

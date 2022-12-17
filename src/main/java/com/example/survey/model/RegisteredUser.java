@@ -1,13 +1,10 @@
 package com.example.survey.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.List;
@@ -26,6 +23,8 @@ public class RegisteredUser {   //changed from User to RegisteredUser
 
     private String login;
 
+    private String password;
+
     private String name;
 
     private String mail;
@@ -34,15 +33,10 @@ public class RegisteredUser {   //changed from User to RegisteredUser
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idRole", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnore     //blad bez JsonIgnore
     private Role role;
 
     @OneToMany(mappedBy = "idUser")      //do sprawdzenia
     @JsonIgnore
     private List<SurveyAnswer> surveyAnswerList;
-
-    @OneToOne(mappedBy = "idUser", optional = false)
-    @PrimaryKeyJoinColumn
-    @JsonManagedReference
-    private Credentials credentials;
 }
