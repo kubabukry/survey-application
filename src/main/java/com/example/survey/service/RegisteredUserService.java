@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RegisteredUserService {
@@ -24,6 +25,7 @@ public class RegisteredUserService {
 
     public RegisteredUser addRegisteredUser(RegisteredUserRegistrationDto registeredUserRegistrationDto){
         RegisteredUser registeredUser = new RegisteredUser();
+
         Role role = roleRepository.findDistinctByName("registered_user");
 
         registeredUser.setLogin(registeredUserRegistrationDto.login());
@@ -33,10 +35,9 @@ public class RegisteredUserService {
         registeredUser.setIsActive(false);
         registeredUser.setRole(role);
 
-        RegisteredUser savedUser = registeredUserRepository.save(registeredUser);
-
-        return savedUser;
+        return registeredUserRepository.save(registeredUser);
     }
+
 
     public RegisteredUser getSingleRegisteredUser(Long id) {
         return registeredUserRepository.findById(id)
@@ -88,5 +89,6 @@ public class RegisteredUserService {
     //login()
     //setCompany()
 
-    //todo dodac validacje pol i obsluge bledow
+    //todo dodac walidacje pol i obsluge bledow
+    //todo obsluga wyjatkow jako Optionals
 }

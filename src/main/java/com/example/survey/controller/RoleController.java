@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.survey.mapper.RoleMapper.mapRoleListToRoleDtoList;
 import static com.example.survey.mapper.RoleMapper.mapRoleToRoleDto;
 
 @RestController
@@ -30,9 +31,14 @@ public class RoleController {
         return mapRoleToRoleDto(roleService.getRoleByName(name));
     }
 
+    @GetMapping("/role/{id}")
+    public RoleDto getRoleById(@PathVariable Long id){
+        return mapRoleToRoleDto(roleService.getRoleById(id));
+    }
+
     @GetMapping("/roles")
-    public List<Role> getRoles(){
-        return roleService.getRoles();
+    public List<RoleDto> getRoles(){
+        return mapRoleListToRoleDtoList(roleService.getRoles());
     }
 
     @DeleteMapping("/roles/{id}")

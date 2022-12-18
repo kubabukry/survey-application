@@ -51,5 +51,4 @@ public class RegisteredUserController {
     public void changePassword(@RequestBody RegisteredUserChangePasswordDto registeredUserChangePasswordDto){
         registeredUserService.changePassword(registeredUserChangePasswordDto);
     }
-    //todo jakie beda prawidlowe endpointy?
 }

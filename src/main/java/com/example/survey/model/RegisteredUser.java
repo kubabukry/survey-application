@@ -33,7 +33,7 @@ public class RegisteredUser {   //changed from User to RegisteredUser
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idRole", referencedColumnName = "id")
-    @JsonIgnore     //blad bez JsonIgnore
+    @JsonIgnore                          //blad bez JsonIgnore
     private Role role;
 
     @OneToMany(mappedBy = "idUser")      //do sprawdzenia

@@ -36,8 +36,7 @@ public class RoleService {
     }
 
     public Role updateRole(RoleDto roleDto) {
-        Role role = new Role();
-        role.setId(roleDto.id());
+        Role role = roleRepository.findDistinctById(roleDto.id());
         role.setName(roleDto.name());
         return roleRepository.save(role);
     }
@@ -49,14 +48,19 @@ public class RoleService {
         return registeredUserRepository.save(registeredUser);
     }
 
+    public Role getRoleById(Long id) {
+        return roleRepository.findDistinctById(id);
+    }
+
 
     //todo zrobic obsluge wyjatkow
 
-    //setRegisteredUserRole() ?? dodawanie po samym id albo nazwie?
+    //setRegisteredUserRole() +
     //createRole(): addRole() +
     //updateRole() +
     //deleteRole() +
     //getRole(): getSingleRole() +
+    //getRoleById() +
 
     //dodatkowo getRoles() +
 }
