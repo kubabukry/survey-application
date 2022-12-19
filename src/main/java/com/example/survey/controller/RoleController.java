@@ -2,10 +2,12 @@ package com.example.survey.controller;
 
 import com.example.survey.dto.RegisteredUserRoleDto;
 import com.example.survey.dto.RoleDto;
-import com.example.survey.dto.RoleIdDto;
 import com.example.survey.dto.RoleNameDto;
-import com.example.survey.model.Role;
+import com.example.survey.exception.ErrorResponse;
+import com.example.survey.exception.NoSuchRoleExistsException;
+import com.example.survey.exception.RoleAlreadyExistsException;
 import com.example.survey.service.RoleService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,10 +28,10 @@ public class RoleController {
         roleService.addRole(roleNameDto);
     }
 
-    @GetMapping("/role/{name}")
-    public RoleDto getRoleByName(@PathVariable String name){
-        return mapRoleToRoleDto(roleService.getRoleByName(name));
-    }
+//    @GetMapping("/role/{name}")
+//    public RoleDto getRoleByName(@PathVariable String name){
+//        return mapRoleToRoleDto(roleService.getRoleByName(name));
+//    }
 
     @GetMapping("/role/{id}")
     public RoleDto getRoleById(@PathVariable Long id){
@@ -56,6 +58,20 @@ public class RoleController {
         roleService.setRegisteredUserRole(registeredUserRoleDto);
     }
 
-    //todo sprawdzic endpointy
+    //handle NoSuchRoleExistsException
+    @ExceptionHandler(value = NoSuchRoleExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNoSuchRoleExistsException(NoSuchRoleExistsException e){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
+
+    //handle RoleAlreadyExistException
+    @ExceptionHandler(value = RoleAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleRoleAlreadyExistsException(RoleAlreadyExistsException e){
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
+    }
+    
+    //todo sprawdzic czy dobry http error code
 
 }

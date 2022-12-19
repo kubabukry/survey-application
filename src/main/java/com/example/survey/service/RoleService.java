@@ -1,6 +1,8 @@
 package com.example.survey.service;
 
 import com.example.survey.dto.*;
+import com.example.survey.exception.NoSuchRoleExistsException;
+import com.example.survey.exception.RoleAlreadyExistsException;
 import com.example.survey.model.RegisteredUser;
 import com.example.survey.model.Role;
 import com.example.survey.repository.RegisteredUserRepository;
@@ -17,39 +19,54 @@ public class RoleService {
     private final RoleRepository roleRepository;
     private final RegisteredUserRepository registeredUserRepository;
 
+    //sprawdza czy rola o danej nazwie juz istnieje, jesli tak wyrzuca wyjatek
     public Role addRole(RoleNameDto roleNameDto) {
-        Role role = new Role();
-        role.setName(roleNameDto.name());
-        return roleRepository.save(role);
+        String roleName = roleRepository.findByName(roleNameDto.name()).getName();
+        if(roleName==null){
+            Role role = new Role();
+            role.setName(roleNameDto.name());
+            return roleRepository.save(role);
+        }
+        else
+            throw new RoleAlreadyExistsException("Role already exists");
     }
 
-    public Role getRoleByName(String name){
-       return roleRepository.findDistinctByName(name);
-    }
+//    public Role getRoleByName(String name){
+//       return roleRepository.findByName(name);
+//    }
 
+    //nie ma wyjatkow, zwroci pusta liste
     public List<Role> getRoles(){
         return roleRepository.findAll();
     }
 
+    //sprawdza czy istnieje, jesli tak to usuwa
     public void deleteRole(Long id){
-        roleRepository.deleteById(id);
+        if(roleRepository.existsById(id))
+            roleRepository.deleteById(id);
     }
 
+    //najpierw sprawdza czy rola istnieje po id
     public Role updateRole(RoleDto roleDto) {
-        Role role = roleRepository.findDistinctById(roleDto.id());
+        Role role = roleRepository.findById(roleDto.id())
+                .orElseThrow(() -> new NoSuchRoleExistsException("No role present with id = "+roleDto.id()));
         role.setName(roleDto.name());
         return roleRepository.save(role);
     }
 
     public RegisteredUser setRegisteredUserRole(RegisteredUserRoleDto registeredUserRoleDto){
         RegisteredUser registeredUser = registeredUserRepository.findDistinctById(registeredUserRoleDto.userId());
-        Role role = roleRepository.findDistinctById(registeredUserRoleDto.roleId());
+
+        //wyjatek tak naprawde obsluzony linijke wyzej, z wlasciwym userem rola nigdy null
+        Role role = roleRepository.findById(registeredUserRoleDto.roleId()).orElseThrow();
         registeredUser.setRole(role);
         return registeredUserRepository.save(registeredUser);
     }
 
+    //sprawdza czy rola z danym id istnieje
     public Role getRoleById(Long id) {
-        return roleRepository.findDistinctById(id);
+        return roleRepository.findById(id)
+                .orElseThrow(() -> new NoSuchRoleExistsException("No role present with id = "+id));
     }
 
 
