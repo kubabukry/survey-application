@@ -30,7 +30,7 @@ public class Company {
     private Boolean isVerified;
 
     @OneToOne
-    @JoinColumn(name = "idUser", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "idUser", referencedColumnName = "id")
     private RegisteredUser idUser;
 
     @OneToMany(mappedBy = "company")

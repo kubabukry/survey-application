@@ -1,13 +1,19 @@
 package com.example.survey.controller;
 
-import com.example.survey.model.Company;
+import com.example.survey.dto.CompanyCreationDto;
+import com.example.survey.dto.CompanyDto;
+import com.example.survey.exception.CompanyNameAlreadyInUseException;
+import com.example.survey.exception.CompanyNipAlreadyInUseException;
+import com.example.survey.exception.ErrorResponse;
+import com.example.survey.exception.NoSuchRegisteredUserException;
 import com.example.survey.service.CompanyService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.example.survey.mapper.CompanyMapper.mapCompanyListToCompanyDtoList;
+import static com.example.survey.mapper.CompanyMapper.mapCompanyToCompanyDto;
 
 @RestController
 public class CompanyController {
@@ -18,13 +24,31 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
-    @GetMapping("/companys")
-    public List<Company> getCompanys(){
-        return companyService.getCompanys();
+    @GetMapping("/companies")
+    public List<CompanyDto> getCompanies(){
+        return mapCompanyListToCompanyDtoList(companyService.getCompanies());
     }
 
-    @PostMapping("/companys")
-    public void addCompany(@RequestBody Company company){
-        companyService.addCompany(company);
+    @PostMapping("/companies")
+    public CompanyDto createCompany(@RequestBody CompanyCreationDto companyCreationDto){
+        return mapCompanyToCompanyDto(companyService.createCompany(companyCreationDto));
+    }
+
+    @ExceptionHandler(value = CompanyNameAlreadyInUseException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleCompanyNameAlreadyInUseException(CompanyNameAlreadyInUseException e){
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
+    }
+
+    @ExceptionHandler(value = CompanyNipAlreadyInUseException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleCompanyNipAlreadyInUseException(CompanyNipAlreadyInUseException e){
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
+    }
+
+    @ExceptionHandler(value = NoSuchRegisteredUserException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNoSuchRegisteredUserException(NoSuchRegisteredUserException e){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 }
