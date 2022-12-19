@@ -12,4 +12,7 @@ public interface RegisteredUserRepository extends JpaRepository<RegisteredUser, 
     RegisteredUser findDistinctById(Long id);
     Optional<RegisteredUser> findDistinctByLogin(String login);
 
+    Boolean existsByLogin (String login);
+    Boolean existsByMail (String name);
+
 }

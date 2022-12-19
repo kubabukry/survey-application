@@ -3,6 +3,7 @@ package com.example.survey.service;
 import com.example.survey.dto.*;
 import com.example.survey.exception.NoSuchRoleExistsException;
 import com.example.survey.exception.RoleAlreadyExistsException;
+import com.example.survey.exception.RoleIsInUseException;
 import com.example.survey.model.RegisteredUser;
 import com.example.survey.model.Role;
 import com.example.survey.repository.RegisteredUserRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,10 +21,12 @@ public class RoleService {
     private final RoleRepository roleRepository;
     private final RegisteredUserRepository registeredUserRepository;
 
+    private final RegisteredUserService registeredUserService;
+
     //sprawdza czy rola o danej nazwie juz istnieje, jesli tak wyrzuca wyjatek
     public Role addRole(RoleNameDto roleNameDto) {
-        String roleName = roleRepository.findByName(roleNameDto.name()).getName();
-        if(roleName==null){
+        Boolean roleExists = roleRepository.existsByName(roleNameDto.name());
+        if(roleExists == false){
             Role role = new Role();
             role.setName(roleNameDto.name());
             return roleRepository.save(role);
@@ -42,8 +46,11 @@ public class RoleService {
 
     //sprawdza czy istnieje, jesli tak to usuwa
     public void deleteRole(Long id){
-        if(roleRepository.existsById(id))
-            roleRepository.deleteById(id);
+        Role role = roleRepository.findById(id).orElseThrow(() -> new NoSuchRoleExistsException(
+                "No role present with id = "+id));
+        if(roleInUse(id)==true)
+            throw new RoleIsInUseException("Role "+role.getName()+" is still in use");
+        roleRepository.deleteById(id);
     }
 
     //najpierw sprawdza czy rola istnieje po id
@@ -67,6 +74,17 @@ public class RoleService {
     public Role getRoleById(Long id) {
         return roleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchRoleExistsException("No role present with id = "+id));
+    }
+
+    private Boolean roleInUse(Long id){
+        List<RegisteredUser> registeredUsersUsingRole = registeredUserService.getRegisteredUsers()
+                .stream()
+                .filter(registeredUser -> registeredUser.getRole().getId()==id)
+                .collect(Collectors.toList());
+        if(registeredUsersUsingRole.isEmpty())
+            return false;
+        else
+            return true;
     }
 
 

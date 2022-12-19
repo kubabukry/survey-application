@@ -4,7 +4,12 @@ import com.example.survey.dto.RegisteredUserActivationDto;
 import com.example.survey.dto.RegisteredUserChangePasswordDto;
 import com.example.survey.dto.RegisteredUserDto;
 import com.example.survey.dto.RegisteredUserRegistrationDto;
+import com.example.survey.exception.ErrorResponse;
+import com.example.survey.exception.LoginAlreadyInUseException;
+import com.example.survey.exception.MailAlreadyInUseException;
+import com.example.survey.exception.NoSuchRegisteredUserException;
 import com.example.survey.service.RegisteredUserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +31,7 @@ public class RegisteredUserController {
 
     @GetMapping("/users/{id}")
     public RegisteredUserDto getSingleUser(@PathVariable Long id) {
-        return mapRegisteredUserToRegisteredUserDto(registeredUserService.getSingleRegisteredUser(id));
+        return mapRegisteredUserToRegisteredUserDto(registeredUserService.getRegisteredUserById(id));
     }
     @PostMapping("/users")
     public RegisteredUserDto addUser(@RequestBody RegisteredUserRegistrationDto registeredUserRegistrationDto){
@@ -50,5 +55,23 @@ public class RegisteredUserController {
     @PutMapping("/users/{id}/password")
     public void changePassword(@RequestBody RegisteredUserChangePasswordDto registeredUserChangePasswordDto){
         registeredUserService.changePassword(registeredUserChangePasswordDto);
+    }
+
+    @ExceptionHandler(value = LoginAlreadyInUseException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleLoginAlreadyInUseException(LoginAlreadyInUseException e){
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
+    }
+
+    @ExceptionHandler(value = MailAlreadyInUseException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleMailAlreadyInUseException(MailAlreadyInUseException e){
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
+    }
+
+    @ExceptionHandler(value = NoSuchRegisteredUserException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNoSuchRegisteredException(NoSuchRegisteredUserException e){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 }

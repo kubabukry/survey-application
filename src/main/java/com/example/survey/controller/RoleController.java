@@ -6,6 +6,7 @@ import com.example.survey.dto.RoleNameDto;
 import com.example.survey.exception.ErrorResponse;
 import com.example.survey.exception.NoSuchRoleExistsException;
 import com.example.survey.exception.RoleAlreadyExistsException;
+import com.example.survey.exception.RoleIsInUseException;
 import com.example.survey.service.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -71,7 +72,13 @@ public class RoleController {
     public ErrorResponse handleRoleAlreadyExistsException(RoleAlreadyExistsException e){
         return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
     }
-    
+
+    @ExceptionHandler(value = RoleIsInUseException.class)
+    @ResponseStatus(HttpStatus.IM_USED)
+    public ErrorResponse handleRoleIsInUse(RoleIsInUseException e){
+        return new ErrorResponse(HttpStatus.IM_USED.value(), e.getMessage());
+    }
+
     //todo sprawdzic czy dobry http error code
 
 }
