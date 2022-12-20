@@ -2,6 +2,7 @@ package com.example.survey.service;
 
 import com.example.survey.dto.CompanyCreationDto;
 import com.example.survey.dto.CompanyDto;
+import com.example.survey.dto.CompanyVerificationDto;
 import com.example.survey.exception.CompanyNameAlreadyInUseException;
 import com.example.survey.exception.CompanyNipAlreadyInUseException;
 import com.example.survey.exception.NoSuchCompanyExistsException;
@@ -84,12 +85,28 @@ public class CompanyService {
                 .orElseThrow(() -> new NoSuchCompanyExistsException("No such company with id = "+id));
     }
 
+    public void verifyCompany(CompanyVerificationDto companyVerificationDto) {
+        Company company = companyRepository.findById(companyVerificationDto.id())
+                .orElseThrow(() -> new NoSuchCompanyExistsException(
+                        "No such company with id = "+companyVerificationDto.id()+"exists"));
+
+        company.setIsVerified(companyVerificationDto.isVerified());
+        companyRepository.save(company);
+    }
+
+    //todo potrzebne jakies inne wyjątki?
+    public void deleteCompany(Long id) {
+        if(companyRepository.existsById(id))
+            companyRepository.deleteById(id);
+    }
+
 
     //getSingleCompany +
-    //deleteCompany()
+    //deleteCompany() +
     //updateCompany() +
-    //verifyCompany()
+    //verifyCompany() +
     //createCompany() +
+    //todo zaimplementować addSurvey() po implementacji SurveyService
     //addSurvey()
 
     //getCompanies() +

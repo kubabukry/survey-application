@@ -84,6 +84,7 @@ public class RegisteredUserService {
         return registeredUserRepository.save(registeredUser);
     }
 
+    //todo co jesli user ma utworzoną firmę? usuwamy też firmę? zostają dane z ankiet firmy?
     public void deleteRegisteredUser(Long id) {
         if(registeredUserRepository.existsById(id))
             registeredUserRepository.deleteById(id);

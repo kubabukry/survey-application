@@ -2,6 +2,7 @@ package com.example.survey.controller;
 
 import com.example.survey.dto.CompanyCreationDto;
 import com.example.survey.dto.CompanyDto;
+import com.example.survey.dto.CompanyVerificationDto;
 import com.example.survey.exception.*;
 import com.example.survey.service.CompanyService;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,15 @@ public class CompanyController {
     @GetMapping("/company/{id}")
     public CompanyDto getSingleCompany(@PathVariable Long id){
         return mapCompanyToCompanyDto(companyService.getSingleCompany(id));
+    }
+
+    @PutMapping("/company/{id}/verify")
+    public void verifyCompany(@RequestBody CompanyVerificationDto companyVerificationDto){
+        companyService.verifyCompany(companyVerificationDto);
+    }
+    @DeleteMapping("/company/{id}")
+    public void deleteCompany(@PathVariable Long id){
+        companyService.deleteCompany(id);
     }
 
     @ExceptionHandler(value = CompanyNameAlreadyInUseException.class)
