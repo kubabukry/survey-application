@@ -2,10 +2,7 @@ package com.example.survey.controller;
 
 import com.example.survey.dto.CompanyCreationDto;
 import com.example.survey.dto.CompanyDto;
-import com.example.survey.exception.CompanyNameAlreadyInUseException;
-import com.example.survey.exception.CompanyNipAlreadyInUseException;
-import com.example.survey.exception.ErrorResponse;
-import com.example.survey.exception.NoSuchRegisteredUserException;
+import com.example.survey.exception.*;
 import com.example.survey.service.CompanyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +31,16 @@ public class CompanyController {
         return mapCompanyToCompanyDto(companyService.createCompany(companyCreationDto));
     }
 
+    @PutMapping("/company/{id}")
+    public CompanyDto updateCompany(@RequestBody CompanyDto companyDto){
+        return mapCompanyToCompanyDto(companyService.updateCompany(companyDto));
+    }
+
+    @GetMapping("/company/{id}")
+    public CompanyDto getSingleCompany(@PathVariable Long id){
+        return mapCompanyToCompanyDto(companyService.getSingleCompany(id));
+    }
+
     @ExceptionHandler(value = CompanyNameAlreadyInUseException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleCompanyNameAlreadyInUseException(CompanyNameAlreadyInUseException e){
@@ -44,6 +51,12 @@ public class CompanyController {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleCompanyNipAlreadyInUseException(CompanyNipAlreadyInUseException e){
         return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
+    }
+
+    @ExceptionHandler(value = NoSuchCompanyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNoSuchCompanyExistsException(NoSuchCompanyExistsException e){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @ExceptionHandler(value = NoSuchRegisteredUserException.class)

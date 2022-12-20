@@ -4,6 +4,7 @@ import com.example.survey.dto.CompanyCreationDto;
 import com.example.survey.dto.CompanyDto;
 import com.example.survey.exception.CompanyNameAlreadyInUseException;
 import com.example.survey.exception.CompanyNipAlreadyInUseException;
+import com.example.survey.exception.NoSuchCompanyExistsException;
 import com.example.survey.exception.NoSuchRegisteredUserException;
 import com.example.survey.model.Company;
 import com.example.survey.model.RegisteredUser;
@@ -24,6 +25,10 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
+    //todo po implementacji logowania bedzie pobieralo zalogowanego usera jako wlascicela danej firmy
+    //poki co trzeba manulanie podac id, wtedy bedzie przypisywalo tego ktory utworzyl po zalogowaniu
+    //todo teraz jeden user moze posiadac jedna firme, czy tak powinno byc?
+    //nie ma na to wyjatku poki co bo nie wiem czy jest potrzebny
     public Company createCompany(CompanyCreationDto companyCreationDto) {
         Boolean nameExists = companyRepository.existsByName(companyCreationDto.name());
         Boolean nipExists = companyRepository.existsByNip(companyCreationDto.nip());
@@ -47,14 +52,48 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    //getCompany()
+    //todo utworzyc CompanyUpdateDto bez podawania isVerified? bez sensu powielanie tego w verifyCompany
+    //dodatkowo user nie powinien miec mozliwosci weryfikacji firmy tylko admin/moderator
+    public Company updateCompany(CompanyDto companyDto) {
+        Company company = companyRepository.findById(companyDto.id())
+                .orElseThrow(() -> new NoSuchCompanyExistsException(
+                        "No company with id = "+companyDto.id()+" exists"));
+
+        Boolean nameExists = companyRepository.existsByName(companyDto.name());
+        Boolean nipExists = companyRepository.existsByNip((companyDto.nip()));
+        if(nameExists)
+            throw new CompanyNameAlreadyInUseException("Company with name: "+companyDto.name()+" already exists");
+        if(nipExists)
+            throw new CompanyNipAlreadyInUseException("Company with nip: "+companyDto.nip()+" already exists");
+
+        RegisteredUser registeredUser = registeredUserRepository.findById(companyDto.idUser())
+                .orElseThrow(() -> new NoSuchRegisteredUserException("" +
+                        "No such user with id = "+companyDto.idUser()+" exists"));
+
+        company.setId(companyDto.id());
+        company.setAddress(companyDto.address());
+        company.setIsVerified(companyDto.isVerified());
+        company.setName(companyDto.name());
+        company.setNip(companyDto.nip());
+        company.setIdUser(registeredUser);
+        return companyRepository.save(company);
+    }
+
+    public Company getSingleCompany(Long id) {
+        return companyRepository.findById(id)
+                .orElseThrow(() -> new NoSuchCompanyExistsException("No such company with id = "+id));
+    }
+
+
+    //getSingleCompany +
     //deleteCompany()
-    //updateCompany()
+    //updateCompany() +
     //verifyCompany()
     //createCompany() +
     //addSurvey()
 
     //getCompanies() +
 
-    //todo z jakiegos powodu przypisuje null do pola user
+    //rozwiazane
+    //z jakiegos powodu przypisuje null do pola user (rozwiazane, pole bylo updatable = false i insertable = false)
 }
