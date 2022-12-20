@@ -53,7 +53,8 @@ public class RegisteredUserService {
 
     public RegisteredUser getRegisteredUserById(Long id) {
         return registeredUserRepository.findById(id)
-                .orElseThrow(() -> new NoSuchRegisteredUserException("No registered user present with id: "+id));                             //dopisac obsluge reszty bledow
+                .orElseThrow(() -> new NoSuchRegisteredUserException(
+                        "No registered user present with id: "+id));
     }
 
     public RegisteredUser updateRegisteredUser(RegisteredUserDto registeredUserDto) {
