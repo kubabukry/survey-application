@@ -30,14 +30,14 @@ public class RegisteredUserService {
     public RegisteredUser addRegisteredUser(RegisteredUserRegistrationDto registeredUserRegistrationDto){
         Boolean loginExists = registeredUserRepository.existsByLogin(registeredUserRegistrationDto.login());
         Boolean mailExists = registeredUserRepository.existsByMail(registeredUserRegistrationDto.mail());
-        if(loginExists){
-            throw new LoginAlreadyInUseException("Login "+registeredUserRegistrationDto.login()+" already in use");
-        }
-        if(mailExists){
-            throw new MailAlreadyInUseException("Mail "+registeredUserRegistrationDto.mail()+" already in use");
-        }
-        RegisteredUser registeredUser = new RegisteredUser();
+        if(loginExists)
+            throw new LoginAlreadyInUseException(
+                    "Login "+registeredUserRegistrationDto.login()+" already in use");
+        if(mailExists)
+            throw new MailAlreadyInUseException(
+                    "Mail "+registeredUserRegistrationDto.mail()+" already in use");
 
+        RegisteredUser registeredUser = new RegisteredUser();
         Role role = roleRepository.findDistinctByName("registered_user");
 
         registeredUser.setLogin(registeredUserRegistrationDto.login());
@@ -65,12 +65,12 @@ public class RegisteredUserService {
 
         Boolean loginExists = registeredUserRepository.existsByLogin(registeredUserDto.login());
         Boolean mailExists = registeredUserRepository.existsByMail(registeredUserDto.mail());
-        if(loginExists){
-            throw new LoginAlreadyInUseException("Login "+registeredUserDto.login()+" already in use");
-        }
-        if(mailExists){
-            throw new MailAlreadyInUseException("Mail "+registeredUserDto.mail()+" already in use");
-        }
+        if(loginExists)
+            throw new LoginAlreadyInUseException(
+                    "Login "+registeredUserDto.login()+" already in use");
+        if(mailExists)
+            throw new MailAlreadyInUseException(
+                    "Mail "+registeredUserDto.mail()+" already in use");
 
         Role role = roleRepository.findDistinctByName(registeredUserDto.roleName());
 

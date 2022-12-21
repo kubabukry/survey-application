@@ -36,6 +36,7 @@ public class SurveyTemplate {
     @JsonIgnore
     private List<CompanySurvey> companySurvey;
 
-    @ManyToMany        //do sprawdzenia (w obu encjach lista, pol ManyToMany?)
+    @ManyToMany
+    @JsonIgnore
     private List<Question> questionList;
 }

@@ -34,7 +34,7 @@ public class RoleController {
 //        return mapRoleToRoleDto(roleService.getRoleByName(name));
 //    }
 
-    @GetMapping("/role/{id}")
+    @GetMapping("/roles/{id}")
     public RoleDto getRoleById(@PathVariable Long id){
         return mapRoleToRoleDto(roleService.getRoleById(id));
     }

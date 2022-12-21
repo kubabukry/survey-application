@@ -26,7 +26,7 @@ public class CategoryService {
     public Category createCategory(CategoryCreationDto categoryCreationDto){
         Boolean categoryExists = categoryRepository.existsByName(categoryCreationDto.name());
 
-        if(categoryExists==false){
+        if(!categoryExists){
             Category category = new Category();
             category.setDescription(categoryCreationDto.description());
             category.setName(categoryCreationDto.name());

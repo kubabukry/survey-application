@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +27,7 @@ public class RoleService {
     //sprawdza czy rola o danej nazwie juz istnieje, jesli tak wyrzuca wyjatek
     public Role addRole(RoleNameDto roleNameDto) {
         Boolean roleExists = roleRepository.existsByName(roleNameDto.name());
-        if(roleExists == false){
+        if(!roleExists){
             Role role = new Role();
             role.setName(roleNameDto.name());
             return roleRepository.save(role);
@@ -48,7 +49,7 @@ public class RoleService {
     public void deleteRole(Long id){
         Role role = roleRepository.findById(id).orElseThrow(() -> new NoSuchRoleExistsException(
                 "No role present with id = "+id));
-        if(roleInUse(id)==true)
+        if(roleInUse(id))
             throw new RoleIsInUseException("Role "+role.getName()+" is still in use");
         roleRepository.deleteById(id);
     }
@@ -77,14 +78,11 @@ public class RoleService {
     }
 
     private Boolean roleInUse(Long id){
-        List<RegisteredUser> registeredUsersUsingRole = registeredUserService.getRegisteredUsers()
+        Set<RegisteredUser> registeredUsersUsingRole = registeredUserService.getRegisteredUsers()
                 .stream()
-                .filter(registeredUser -> registeredUser.getRole().getId()==id)
-                .collect(Collectors.toList());
-        if(registeredUsersUsingRole.isEmpty())
-            return false;
-        else
-            return true;
+                .filter(registeredUser -> registeredUser.getRole().getId() == id)
+                .collect(Collectors.toSet());
+        return !registeredUsersUsingRole.isEmpty();
     }
 
 

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SurveyTemplateRepository extends JpaRepository<SurveyTemplate, Long> {
+    Boolean existsByTitle(String title);
 }

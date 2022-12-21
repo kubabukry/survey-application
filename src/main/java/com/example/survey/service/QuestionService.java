@@ -61,10 +61,12 @@ public class QuestionService {
     }
 
 
+
     //getQuestion() +
     //deleteQuestion() +
     //updateQuestion() +
     //createQuestion() +
 
     //getQuestions() +
+    //czy tu nie powinno być metody answerQuestion()?
 }

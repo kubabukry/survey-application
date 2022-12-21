@@ -41,7 +41,7 @@ public class CategoryController {
         categoryService.deleteCategory(id);
     }
 
-    @PutMapping("/category/{id}")
+    @PutMapping("/categories/{id}")
     public CategoryDto updateCategory(@RequestBody CategoryDto categoryDto){
         return mapCategoryToCategoryDto(categoryService.updateCategory(categoryDto));
     }

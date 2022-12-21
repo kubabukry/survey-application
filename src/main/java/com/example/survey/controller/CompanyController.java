@@ -32,21 +32,21 @@ public class CompanyController {
         return mapCompanyToCompanyDto(companyService.createCompany(companyCreationDto));
     }
 
-    @PutMapping("/company/{id}")
+    @PutMapping("/companies/{id}")
     public CompanyDto updateCompany(@RequestBody CompanyDto companyDto){
         return mapCompanyToCompanyDto(companyService.updateCompany(companyDto));
     }
 
-    @GetMapping("/company/{id}")
+    @GetMapping("/companies/{id}")
     public CompanyDto getSingleCompany(@PathVariable Long id){
         return mapCompanyToCompanyDto(companyService.getSingleCompany(id));
     }
 
-    @PutMapping("/company/{id}/verify")
+    @PutMapping("/companies/{id}/verify")
     public void verifyCompany(@RequestBody CompanyVerificationDto companyVerificationDto){
         companyService.verifyCompany(companyVerificationDto);
     }
-    @DeleteMapping("/company/{id}")
+    @DeleteMapping("/companies/{id}")
     public void deleteCompany(@PathVariable Long id){
         companyService.deleteCompany(id);
     }
