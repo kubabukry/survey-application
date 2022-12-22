@@ -4,7 +4,7 @@ import com.example.survey.dto.CompanySurveyDto;
 import com.example.survey.model.CompanySurvey;
 
 public class CompanySurveyMapper {
-    public static CompanySurveyDto mapCreateCompanyToCompanySurveyDto(CompanySurvey companySurvey){
+    public static CompanySurveyDto mapCompanySurveyToCompanySurveyDto(CompanySurvey companySurvey){
         return new CompanySurveyDto(
                 companySurvey.getId(),
                 companySurvey.getSurveyTemplate().getId(),

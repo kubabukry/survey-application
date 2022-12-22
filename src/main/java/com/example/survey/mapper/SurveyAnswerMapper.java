@@ -1,11 +1,16 @@
 package com.example.survey.mapper;
-
-import com.example.survey.dto.AnswerQuestionDto;
+import com.example.survey.dto.SurveyAnswerDto;
 import com.example.survey.model.SurveyAnswer;
 
 public class SurveyAnswerMapper {
 
-    public static AnswerQuestionDto mapSurveyAnswerToAnswerQuestionDto(SurveyAnswer surveyAnswer){
-        return new AnswerQuestionDto(surveyAnswer.getQuestion().getId(), surveyAnswer.getRating());
+    public static SurveyAnswerDto mapSurveyAnswerToSurveyAnswerDto(SurveyAnswer surveyAnswer){
+        return new SurveyAnswerDto(
+                surveyAnswer.getId(),
+                surveyAnswer.getRating(),
+                surveyAnswer.getCompanySurvey().getId(),
+                surveyAnswer.getIdUser().getId(),
+                surveyAnswer.getQuestion().getId()
+        );
     }
 }

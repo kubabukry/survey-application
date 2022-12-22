@@ -1,9 +1,6 @@
 package com.example.survey.service;
 
-import com.example.survey.dto.CreateCompanySurveyDto;
-import com.example.survey.dto.SurveyTemplateAddQuestionDto;
-import com.example.survey.dto.SurveyTemplateCreationDto;
-import com.example.survey.dto.SurveyTemplateDto;
+import com.example.survey.dto.*;
 import com.example.survey.exception.*;
 import com.example.survey.model.*;
 import com.example.survey.repository.*;
@@ -11,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +18,8 @@ public class SurveyService {
     private final SurveyAnswerRepository surveyAnswerRepository;
 
     private final CategoryRepository categoryRepository;
+
+    private final RegisteredUserRepository registeredUserRepository;
 
     private final CompanyRepository companyRepository;
 
@@ -39,7 +39,7 @@ public class SurveyService {
 
     //todo zmienić to po zaimplementowaniu logowania - ma pobierać
 //  hardcodedUid do answerQuestion() dopóki nie ma logowania
-    private Long hardcodedUid = Long.valueOf(65);
+//    private Long hardcodedUid = Long.valueOf(65);
 
     public List<SurveyTemplate> getSurveyTemplates(){
         return surveyTemplateRepository.findAll();
@@ -158,24 +158,38 @@ public class SurveyService {
         return companySurveyRepository.save(companySurvey);
     }
 
+    public CompanySurvey setCompanySurveyVisibility(CompanySurveyVisibilityDto companySurveyVisibilityDto) {
+        CompanySurvey companySurvey = companySurveyRepository.findById(companySurveyVisibilityDto.id())
+                .orElseThrow(() -> new NoSuchCompanySurveyExistsException("" +
+                        "No such company survey with id = "+companySurveyVisibilityDto.id()+" exists"));
+        companySurvey.setIsHidden(companySurveyVisibilityDto.isHidden());
+        return companySurveyRepository.save(companySurvey);
+    }
 
-//    private Boolean surveyTemplateInUse(Long id){
-//        Set<CompanySurvey> companySurveysUsingSurveyTemplate = companySurveyRepository.getRegisteredUsers()
-//                .stream()
-//                .filter(registeredUser -> registeredUser.getRole().getId() == id)
-//                .collect(Collectors.toSet());
-//        return !registeredUsersUsingRole.isEmpty();
+    public SurveyAnswer answerQuestion(AnswerQuestionDto answerQuestionDto) {
+        Question question =  questionRepository.findById(answerQuestionDto.idQuestion())
+                .orElseThrow(() -> new NoSuchQuestionExistsException("" +
+                        "No such question with id = "+answerQuestionDto.idQuestion()+" exists"));
+        RegisteredUser registeredUser = registeredUserRepository.findById(answerQuestionDto.idUser())
+                .orElseThrow(() -> new NoSuchRegisteredUserException(
+                        "No registered user present with id: "+answerQuestionDto.idUser()));
+        CompanySurvey companySurvey = companySurveyRepository.findById(answerQuestionDto.idCompanySurvey())
+                .orElseThrow(() -> new NoSuchCompanySurveyExistsException(
+                        "No such company survey with id = "+answerQuestionDto.idCompanySurvey()+" exists"));
+        Boolean alreadyAnswered = surveyAnswerRepository
+                .existsByCompanySurveyAndIdUserAndQuestion(companySurvey, registeredUser, question);
+        if(alreadyAnswered)
+            throw new QuestionAlreadyAnsweredException(
+                    "User id = "+registeredUser.getId()+" already answered this question for company survey id = "+companySurvey.getId());
 
-//    public SurveyAnswer answerQuestion(AnswerQuestionDto answerQuestionDto) {
-//        Question question =  questionRepository.findById(answerQuestionDto.idQuestion())
-//                .orElseThrow(() -> new NoSuchQuestionExistsException("" +
-//                        "No such question with id = "+answerQuestionDto.idQuestion()+" exists"));
-//        SurveyAnswer surveyAnswer = new SurveyAnswer();
-//        surveyAnswer.setIdUser(registeredUserService.getRegisteredUserById(hardcodedUid));
-//        surveyAnswer.setQuestion(question);
-//        //todo brakuje polaczenia miedzy company_survey a czym?
-//        //surveyAnswer.setCompanySurvey();
-//    }
+        SurveyAnswer surveyAnswer = new SurveyAnswer();
+        surveyAnswer.setCompanySurvey(companySurvey);
+        surveyAnswer.setIdUser(registeredUser);
+        surveyAnswer.setQuestion(question);
+        surveyAnswer.setRating(answerQuestionDto.rating());
+
+        return surveyAnswerRepository.save(surveyAnswer);
+    }
 
     //createSurveyTemplate() +
     //bedzie to robil admin/moderator?
@@ -193,16 +207,16 @@ public class SurveyService {
     //addSurveyTemplate() +
     //jaka roznica miedzy createSurveyTemplate()?
 
-    //getSurveyAnswer()
+    //getSurveyAnswer(): getSingleSurveyAnswer()
 
     //addSurveyToCompany(): createCompanySurvey() +
 
-    //setCompanySurveyVisibility()
-    //bedzie to robil user-wlasciciel firmy?
+    //setCompanySurveyVisibility() +
 
     //dodatkowo
     //addQuestionToSurveyTemplate() +
-    //answerQuestion()
+    //answerQuestion() +
     //getSingleSurveyTemplate() +
+    //getSurveyAnswersForCompanySurvey()
 
 }

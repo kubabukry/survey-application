@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.example.survey.mapper.SurveyTemplateMapper.mapSurveyTemplateListToSurveyTemplateDtoList;
 import static com.example.survey.mapper.SurveyTemplateMapper.mapSurveyTemplateToSurveyTemplateDto;
-import static com.example.survey.mapper.CompanySurveyMapper.mapCreateCompanyToCompanySurveyDto;
+import static com.example.survey.mapper.CompanySurveyMapper.mapCompanySurveyToCompanySurveyDto;
+import static com.example.survey.mapper.SurveyAnswerMapper.mapSurveyAnswerToSurveyAnswerDto;
 
 import java.util.List;
 
@@ -52,7 +53,17 @@ public class SurveyController {
 
     @PostMapping("/company-survey")
     public CompanySurveyDto createCompanySurvey(@RequestBody CreateCompanySurveyDto createCompanySurveyDto){
-        return mapCreateCompanyToCompanySurveyDto(surveyService.createCompanySurvey(createCompanySurveyDto));
+        return mapCompanySurveyToCompanySurveyDto(surveyService.createCompanySurvey(createCompanySurveyDto));
+    }
+
+    @PutMapping("/company-survey/set-visibility")
+    public CompanySurveyDto setCompanySurveyVisibility(@RequestBody CompanySurveyVisibilityDto companySurveyVisibilityDto){
+        return mapCompanySurveyToCompanySurveyDto(surveyService.setCompanySurveyVisibility(companySurveyVisibilityDto));
+    }
+
+    @PostMapping("/answer-question")
+    public SurveyAnswerDto answerQuestion(@RequestBody AnswerQuestionDto answerQuestionDto){
+        return mapSurveyAnswerToSurveyAnswerDto(surveyService.answerQuestion(answerQuestionDto));
     }
 
     @DeleteMapping("/survey-templates/{id}")

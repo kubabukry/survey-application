@@ -106,4 +106,16 @@ public class ExceptionController {
     public ErrorResponse handleCompanyAlreadyUsedTemplateException(CompanyAlreadyUsedTemplateException e){
         return new ErrorResponse(HttpStatus.IM_USED.value(), e.getMessage());
     }
+
+    @ExceptionHandler(value = NoSuchCompanySurveyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNoSuchCompanySurveyExistsException(NoSuchCompanySurveyExistsException e){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
+
+    @ExceptionHandler(value = QuestionAlreadyAnsweredException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleQuestionAlreadyAnsweredException(QuestionAlreadyAnsweredException e){
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
+    }
 }
