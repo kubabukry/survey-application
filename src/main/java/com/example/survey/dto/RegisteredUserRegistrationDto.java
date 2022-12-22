@@ -1,11 +1,10 @@
 package com.example.survey.dto;
 
 public record RegisteredUserRegistrationDto(
-    String login,
-    String name,
+        String login,
 
-    String mail,
-
-    String password
+        String password,
+        String name,
+        String mail
 ) {
 }

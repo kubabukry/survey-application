@@ -1,10 +1,15 @@
 package com.example.survey.controller;
 
-import com.example.survey.dto.CredentialsDto;
+import com.example.survey.dto.RegisteredUserActivationDto;
+import com.example.survey.dto.RegisteredUserChangePasswordDto;
 import com.example.survey.dto.RegisteredUserDto;
 import com.example.survey.dto.RegisteredUserRegistrationDto;
-import com.example.survey.model.RegisteredUser;
+import com.example.survey.exception.ErrorResponse;
+import com.example.survey.exception.LoginAlreadyInUseException;
+import com.example.survey.exception.MailAlreadyInUseException;
+import com.example.survey.exception.NoSuchRegisteredUserException;
 import com.example.survey.service.RegisteredUserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,15 +26,34 @@ public class RegisteredUserController {
 
     @GetMapping("/users")
     public List<RegisteredUserDto> getUsers() {
-        return mapRegisteredUserToRegisteredUserDtoList(registeredUserService.getUsers());
+        return mapRegisteredUserToRegisteredUserDtoList(registeredUserService.getRegisteredUsers());
     }
 
     @GetMapping("/users/{id}")
     public RegisteredUserDto getSingleUser(@PathVariable Long id) {
-        return mapRegisteredUserToRegisteredUserDto(registeredUserService.getSingleUser(id));
+        return mapRegisteredUserToRegisteredUserDto(registeredUserService.getRegisteredUserById(id));
     }
     @PostMapping("/users")
     public RegisteredUserDto addUser(@RequestBody RegisteredUserRegistrationDto registeredUserRegistrationDto){
-        return mapRegisteredUserToRegisteredUserDto(registeredUserService.addUser(registeredUserRegistrationDto));
+        return mapRegisteredUserToRegisteredUserDto(registeredUserService.addRegisteredUser(registeredUserRegistrationDto));
+    }
+    @PutMapping("/users/{id}")
+    public RegisteredUserDto updateUser(@RequestBody RegisteredUserDto registeredUserDto){
+        return mapRegisteredUserToRegisteredUserDto(registeredUserService.updateRegisteredUser(registeredUserDto));
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable Long id){
+        registeredUserService.deleteRegisteredUser(id);
+    }
+
+    @PutMapping("/users/{id}/activate")
+    public void activateUser(@RequestBody RegisteredUserActivationDto registeredUserActivationDto){
+        registeredUserService.activateRegisteredUser(registeredUserActivationDto);
+    }
+
+    @PutMapping("/users/{id}/password")
+    public void changePassword(@RequestBody RegisteredUserChangePasswordDto registeredUserChangePasswordDto){
+        registeredUserService.changePassword(registeredUserChangePasswordDto);
     }
 }

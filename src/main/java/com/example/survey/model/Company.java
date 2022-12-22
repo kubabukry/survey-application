@@ -18,7 +18,7 @@ import java.util.List;
 public class Company {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) //zmienione po sugestii snowflake
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
@@ -30,7 +30,7 @@ public class Company {
     private Boolean isVerified;
 
     @OneToOne
-    @JoinColumn(name = "idUser", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "idUser", referencedColumnName = "id")
     private RegisteredUser idUser;
 
     @OneToMany(mappedBy = "company")

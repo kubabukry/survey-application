@@ -1,5 +1,6 @@
 package com.example.survey.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,12 @@ import java.util.List;
 public class Question {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
 
-    @ManyToMany(mappedBy = "questionList")     //do sprawdzenia
+    @ManyToMany(mappedBy = "questionList")
     private List<SurveyTemplate> surveyTemplateList;
 
     @OneToMany(mappedBy = "question")
