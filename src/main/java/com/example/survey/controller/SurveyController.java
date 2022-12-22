@@ -1,29 +1,32 @@
 package com.example.survey.controller;
 
-import com.example.survey.dto.AnswerQuestionDto;
-import com.example.survey.dto.QuestionDto;
-import com.example.survey.dto.SurveyTemplateCreationDto;
-import com.example.survey.dto.SurveyTemplateDto;
-import com.example.survey.exception.*;
+import com.example.survey.dto.*;
 import com.example.survey.model.SurveyTemplate;
 import com.example.survey.service.SurveyService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.survey.mapper.SurveyTemplateMapper.mapSurveyTemplateListToSurveyTemplateDtoList;
 import static com.example.survey.mapper.SurveyTemplateMapper.mapSurveyTemplateToSurveyTemplateDto;
+import static com.example.survey.mapper.CompanySurveyMapper.mapCreateCompanyToCompanySurveyDto;
 
 import java.util.List;
 
 @RestController
 public class SurveyController {
     private final SurveyService surveyService;
+
     public SurveyController(SurveyService surveyService) {
         this.surveyService = surveyService;
     }
 
-    @GetMapping("/surveytemplates")
-    public List<SurveyTemplate> getSurveyTemplates(){
-        return surveyService.getSurveyTemplates();
+    @GetMapping("/survey-templates")
+    public List<SurveyTemplateDto> getSurveyTemplates(){
+        return mapSurveyTemplateListToSurveyTemplateDtoList(surveyService.getSurveyTemplates());
+    }
+
+    @GetMapping("/survey-templates/{id}")
+    public SurveyTemplateDto getSingleSurveyTemplate(@PathVariable Long id){
+        return mapSurveyTemplateToSurveyTemplateDto(surveyService.getSingleSurveyTemplate(id));
     }
 
 
@@ -42,27 +45,18 @@ public class SurveyController {
         return mapSurveyTemplateToSurveyTemplateDto(surveyService.updateSurveyTemplate(surveyTemplateDto));
     }
 
-    @ExceptionHandler(value = TitleAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleTitleAlreadyExistsException(TitleAlreadyExistsException e){
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
+    @PutMapping("/survey-templates/add-question")
+    public SurveyTemplateDto addQuestionToSurveyTemplate(@RequestBody SurveyTemplateAddQuestionDto surveyTemplateAddQuestionDto){
+        return mapSurveyTemplateToSurveyTemplateDto(surveyService.addQuestionToSurveyTemplate(surveyTemplateAddQuestionDto));
     }
 
-    @ExceptionHandler(value = NoSuchCategoryExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleNoSuchCategoryExistsException(NoSuchCategoryExistsException e){
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    @PostMapping("/company-survey")
+    public CompanySurveyDto createCompanySurvey(@RequestBody CreateCompanySurveyDto createCompanySurveyDto){
+        return mapCreateCompanyToCompanySurveyDto(surveyService.createCompanySurvey(createCompanySurveyDto));
     }
 
-    @ExceptionHandler(value = NoSuchSurveyTemplateExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleNoSuchSurveyTemplateExistsException(NoSuchSurveyTemplateExistsException e){
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(value = NoSuchQuestionExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleNoSuchQuestionExistsException(NoSuchQuestionExistsException e){
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    @DeleteMapping("/survey-templates/{id}")
+    public void deleteSurveyTemplate(@PathVariable Long id){
+        surveyService.deleteSurveyTemplate(id);
     }
 }

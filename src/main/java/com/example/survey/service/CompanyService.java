@@ -107,10 +107,7 @@ public class CompanyService {
     //verifyCompany() +
     //createCompany() +
     //todo zaimplementować addSurvey() po implementacji SurveyService
-    //addSurvey()
+    //addSurvey() + zaimplementowane w SurveyService jako createCompanySurvey()
 
     //getCompanies() +
-
-    //rozwiazane
-    //z jakiegos powodu przypisuje null do pola user (rozwiazane, pole bylo updatable = false i insertable = false)
 }

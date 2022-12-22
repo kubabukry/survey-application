@@ -50,28 +50,4 @@ public class CompanyController {
     public void deleteCompany(@PathVariable Long id){
         companyService.deleteCompany(id);
     }
-
-    @ExceptionHandler(value = CompanyNameAlreadyInUseException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleCompanyNameAlreadyInUseException(CompanyNameAlreadyInUseException e){
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(value = CompanyNipAlreadyInUseException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleCompanyNipAlreadyInUseException(CompanyNipAlreadyInUseException e){
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(value = NoSuchCompanyExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleNoSuchCompanyExistsException(NoSuchCompanyExistsException e){
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(value = NoSuchRegisteredUserException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleNoSuchRegisteredUserException(NoSuchRegisteredUserException e){
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
 }

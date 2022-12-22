@@ -47,16 +47,4 @@ public class QuestionController {
     public void deleteQuestion(@PathVariable Long id){
         questionService.deleteQuestion(id);
     }
-
-    @ExceptionHandler(value = QuestionAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleQuestionAlreadyExistsException(QuestionAlreadyExistsException e){
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(value = NoSuchQuestionExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleNoSuchQuestionExistsException(NoSuchQuestionExistsException e){
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
 }

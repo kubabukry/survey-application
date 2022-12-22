@@ -29,11 +29,6 @@ public class RoleController {
         roleService.addRole(roleNameDto);
     }
 
-//    @GetMapping("/role/{name}")
-//    public RoleDto getRoleByName(@PathVariable String name){
-//        return mapRoleToRoleDto(roleService.getRoleByName(name));
-//    }
-
     @GetMapping("/roles/{id}")
     public RoleDto getRoleById(@PathVariable Long id){
         return mapRoleToRoleDto(roleService.getRoleById(id));
@@ -58,27 +53,4 @@ public class RoleController {
     public void setRegisteredUserRole(@RequestBody RegisteredUserRoleDto registeredUserRoleDto){
         roleService.setRegisteredUserRole(registeredUserRoleDto);
     }
-
-    //handle NoSuchRoleExistsException
-    @ExceptionHandler(value = NoSuchRoleExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleNoSuchRoleExistsException(NoSuchRoleExistsException e){
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
-
-    //handle RoleAlreadyExistException
-    @ExceptionHandler(value = RoleAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleRoleAlreadyExistsException(RoleAlreadyExistsException e){
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(value = RoleIsInUseException.class)
-    @ResponseStatus(HttpStatus.IM_USED)
-    public ErrorResponse handleRoleIsInUse(RoleIsInUseException e){
-        return new ErrorResponse(HttpStatus.IM_USED.value(), e.getMessage());
-    }
-
-    //todo sprawdzic czy dobry http error code
-
 }

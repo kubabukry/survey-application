@@ -45,16 +45,4 @@ public class CategoryController {
     public CategoryDto updateCategory(@RequestBody CategoryDto categoryDto){
         return mapCategoryToCategoryDto(categoryService.updateCategory(categoryDto));
     }
-
-    @ExceptionHandler(value = CategoryAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleCategoryAlreadyExistsException(CategoryAlreadyExistsException e){
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(value = NoSuchCategoryExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleNoSuchCategoryExistsException(NoSuchCategoryExistsException e){
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
 }

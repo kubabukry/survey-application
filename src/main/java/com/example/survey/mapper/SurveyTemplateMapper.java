@@ -22,4 +22,17 @@ public class SurveyTemplateMapper {
                 questionIdList
         );
     }
+
+    public static List<SurveyTemplateDto> mapSurveyTemplateListToSurveyTemplateDtoList(List<SurveyTemplate> surveyTemplateList){
+        return surveyTemplateList.stream()
+                .map(surveyTemplate -> new SurveyTemplateDto(
+                        surveyTemplate.getId(),
+                        surveyTemplate.getTitle(),
+                        surveyTemplate.getDescription(),
+                        surveyTemplate.getCategory().getId(),
+                        surveyTemplate.getQuestionList().stream()
+                                .map(question -> question.getId())
+                                .collect(Collectors.toList())
+                )).collect(Collectors.toList());
+    }
 }

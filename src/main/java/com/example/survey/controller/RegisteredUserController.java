@@ -56,22 +56,4 @@ public class RegisteredUserController {
     public void changePassword(@RequestBody RegisteredUserChangePasswordDto registeredUserChangePasswordDto){
         registeredUserService.changePassword(registeredUserChangePasswordDto);
     }
-
-    @ExceptionHandler(value = LoginAlreadyInUseException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleLoginAlreadyInUseException(LoginAlreadyInUseException e){
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(value = MailAlreadyInUseException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleMailAlreadyInUseException(MailAlreadyInUseException e){
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(value = NoSuchRegisteredUserException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleNoSuchRegisteredException(NoSuchRegisteredUserException e){
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
 }
