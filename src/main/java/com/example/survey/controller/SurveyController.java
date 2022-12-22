@@ -61,9 +61,14 @@ public class SurveyController {
         return mapCompanySurveyToCompanySurveyDto(surveyService.setCompanySurveyVisibility(companySurveyVisibilityDto));
     }
 
-    @PostMapping("/answer-question")
+    @PostMapping("/survey-answer")
     public SurveyAnswerDto answerQuestion(@RequestBody AnswerQuestionDto answerQuestionDto){
         return mapSurveyAnswerToSurveyAnswerDto(surveyService.answerQuestion(answerQuestionDto));
+    }
+
+    @GetMapping("/survey-answer/{id}")
+    public SurveyAnswerDto getSingleSurveyAnswer(@PathVariable Long id){
+        return mapSurveyAnswerToSurveyAnswerDto(surveyService.getSingleSurveyAnswer(id));
     }
 
     @DeleteMapping("/survey-templates/{id}")

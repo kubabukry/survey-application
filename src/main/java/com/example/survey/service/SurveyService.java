@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -191,6 +190,12 @@ public class SurveyService {
         return surveyAnswerRepository.save(surveyAnswer);
     }
 
+    public SurveyAnswer getSingleSurveyAnswer(Long id) {
+        return surveyAnswerRepository.findById(id)
+                .orElseThrow(() -> new NoSuchSurveySurveyAnswerExistsException(
+                        "No such survey answer with id = "+id+" exists"));
+    }
+
     //createSurveyTemplate() +
     //bedzie to robil admin/moderator?
 
@@ -207,7 +212,7 @@ public class SurveyService {
     //addSurveyTemplate() +
     //jaka roznica miedzy createSurveyTemplate()?
 
-    //getSurveyAnswer(): getSingleSurveyAnswer()
+    //getSurveyAnswer(): getSingleSurveyAnswer() +
 
     //addSurveyToCompany(): createCompanySurvey() +
 
@@ -217,6 +222,6 @@ public class SurveyService {
     //addQuestionToSurveyTemplate() +
     //answerQuestion() +
     //getSingleSurveyTemplate() +
-    //getSurveyAnswersForCompanySurvey()
+    //getSurveyAnswersForCompanySurvey()?
 
 }

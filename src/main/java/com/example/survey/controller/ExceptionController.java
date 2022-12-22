@@ -118,4 +118,10 @@ public class ExceptionController {
     public ErrorResponse handleQuestionAlreadyAnsweredException(QuestionAlreadyAnsweredException e){
         return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
     }
+
+    @ExceptionHandler(value = NoSuchSurveySurveyAnswerExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNoSuchSurveyAnswerExistsException(NoSuchSurveySurveyAnswerExistsException e){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
 }
