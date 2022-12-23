@@ -12,6 +12,7 @@ import com.example.survey.service.RegisteredUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.survey.mapper.RegisteredUserDtoMapper.mapRegisteredUserToRegisteredUserDto;
@@ -34,11 +35,11 @@ public class RegisteredUserController {
         return mapRegisteredUserToRegisteredUserDto(registeredUserService.getRegisteredUserById(id));
     }
     @PostMapping("/users")
-    public RegisteredUserDto addUser(@RequestBody RegisteredUserRegistrationDto registeredUserRegistrationDto){
+    public RegisteredUserDto addUser(@Valid @RequestBody RegisteredUserRegistrationDto registeredUserRegistrationDto){
         return mapRegisteredUserToRegisteredUserDto(registeredUserService.addRegisteredUser(registeredUserRegistrationDto));
     }
     @PutMapping("/users/{id}")
-    public RegisteredUserDto updateUser(@RequestBody RegisteredUserDto registeredUserDto){
+    public RegisteredUserDto updateUser(@Valid @RequestBody RegisteredUserDto registeredUserDto){
         return mapRegisteredUserToRegisteredUserDto(registeredUserService.updateRegisteredUser(registeredUserDto));
     }
 
@@ -53,7 +54,7 @@ public class RegisteredUserController {
     }
 
     @PutMapping("/users/{id}/password")
-    public void changePassword(@RequestBody RegisteredUserChangePasswordDto registeredUserChangePasswordDto){
+    public void changePassword(@Valid @RequestBody RegisteredUserChangePasswordDto registeredUserChangePasswordDto){
         registeredUserService.changePassword(registeredUserChangePasswordDto);
     }
 }
