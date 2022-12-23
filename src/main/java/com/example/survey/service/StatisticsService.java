@@ -103,7 +103,7 @@ public class StatisticsService {
                 .average()
                 .orElse(0.0);
 
-        DecimalFormat df = new DecimalFormat("#.#");
+        DecimalFormat df = new DecimalFormat("#.0");
         return df.format(averageScore);
     }
 

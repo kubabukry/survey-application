@@ -1,12 +1,11 @@
 package com.example.survey.controller;
 
 import com.example.survey.dto.AverageScoreForSurveyDto;
+import com.example.survey.dto.ScoreResponseDto;
 import com.example.survey.service.StatisticsService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.example.survey.mapper.ScoreMapper.mapScoreToScoreResponseDto;
 
 @RestController
 public class StatisticsController {
@@ -16,17 +15,20 @@ public class StatisticsController {
     }
 
     @PostMapping("/survey-score")
-    public ResponseEntity<String> getAverageScoreForSurvey(@RequestBody AverageScoreForSurveyDto averageScoreForSurveyDto){
-        return ResponseEntity.ok(statisticsService.getAverageScoreForSurvey(averageScoreForSurveyDto));
+    @ResponseBody
+    public ScoreResponseDto getAverageScoreForSurvey(@RequestBody AverageScoreForSurveyDto averageScoreForSurveyDto){
+        return mapScoreToScoreResponseDto(statisticsService.getAverageScoreForSurvey(averageScoreForSurveyDto));
     }
 
     @PostMapping("/company-survey-score/{id}")
-    public ResponseEntity<String> getAverageScoreForCompanySurvey(@PathVariable Long id){
-        return ResponseEntity.ok(statisticsService.getAverageScoreForCompanySurvey(id));
+    @ResponseBody
+    public ScoreResponseDto getAverageScoreForCompanySurvey(@PathVariable Long id){
+        return mapScoreToScoreResponseDto(statisticsService.getAverageScoreForCompanySurvey(id));
     }
 
     @PostMapping("/company-score/{id}")
-    public ResponseEntity<String> getAverageScoreForCompany(@PathVariable Long id){
-        return ResponseEntity.ok(statisticsService.getAverageScoreForCompany(id));
+    @ResponseBody
+    public ScoreResponseDto getAverageScoreForCompany(@PathVariable Long id){
+        return mapScoreToScoreResponseDto(statisticsService.getAverageScoreForCompany(id));
     }
 }
