@@ -4,12 +4,7 @@ import com.example.survey.dto.RegisteredUserActivationDto;
 import com.example.survey.dto.RegisteredUserChangePasswordDto;
 import com.example.survey.dto.RegisteredUserDto;
 import com.example.survey.dto.RegisteredUserRegistrationDto;
-import com.example.survey.exception.ErrorResponse;
-import com.example.survey.exception.LoginAlreadyInUseException;
-import com.example.survey.exception.MailAlreadyInUseException;
-import com.example.survey.exception.NoSuchRegisteredUserException;
 import com.example.survey.service.RegisteredUserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -49,7 +44,7 @@ public class RegisteredUserController {
     }
 
     @PutMapping("/users/{id}/activate")
-    public void activateUser(@RequestBody RegisteredUserActivationDto registeredUserActivationDto){
+    public void activateUser(@Valid @RequestBody RegisteredUserActivationDto registeredUserActivationDto){
         registeredUserService.activateRegisteredUser(registeredUserActivationDto);
     }
 

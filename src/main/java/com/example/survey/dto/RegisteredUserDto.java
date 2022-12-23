@@ -1,16 +1,24 @@
 package com.example.survey.dto;
 
-import javax.validation.constraints.NotBlank;
+import com.example.survey.validation.ValidLogin;
+import com.example.survey.validation.ValidMail;
+import com.example.survey.validation.ValidUserName;
+
+import javax.validation.constraints.*;
 
 public record RegisteredUserDto(Long id,
-                                @NotBlank(message = "login is mandatory")
+                                @ValidLogin
                                 String login,
-                                @NotBlank(message = "name is mandatory")
+                                @ValidUserName
                                 String name,
-                                @NotBlank(message = "mail is mandatory")
+
+                                @ValidMail
                                 String mail,
-                                @NotBlank(message = "isActive is mandatory")
+                                //NotNull wystarczające dla Boolean
+                                @NotNull
                                 Boolean isActive,
+                                //NotNull wystarczające dla roli, wyjątki są sprawdzane w serwisie
+                                @NotNull
                                 @NotBlank(message = "role is mandatory")
                                 String roleName) {
 }

@@ -1,16 +1,18 @@
 package com.example.survey.dto;
 
-import javax.validation.constraints.NotBlank;
+import com.example.survey.validation.PasswordComplexity;
+import com.example.survey.validation.ValidLogin;
+import com.example.survey.validation.ValidMail;
+import com.example.survey.validation.ValidUserName;
 
 public record RegisteredUserRegistrationDto(
-        @NotBlank(message = "login is mandatory")
+        @ValidLogin
         String login,
-
-        @NotBlank(message = "password is mandatory")
+        @PasswordComplexity
         String password,
-        @NotBlank(message = "name is mandatory")
+        @ValidUserName
         String name,
-        @NotBlank(message = "mail is mandatory")
+        @ValidMail
         String mail
 ) {
 }
