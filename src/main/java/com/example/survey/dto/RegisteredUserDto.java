@@ -14,11 +14,8 @@ public record RegisteredUserDto(Long id,
 
                                 @ValidMail
                                 String mail,
-                                //NotNull wystarczające dla Boolean
                                 @NotNull
                                 Boolean isActive,
-                                //NotNull wystarczające dla roli, wyjątki są sprawdzane w serwisie
-                                @NotNull
-                                @NotBlank(message = "role is mandatory")
+                                @NotNull(message = "role is mandatory")
                                 String roleName) {
 }

@@ -1,4 +1,6 @@
 package com.example.survey.dto;
 
-public record RoleNameDto(String name) {
+import com.example.survey.validation.ValidRoleName;
+
+public record RoleNameDto(@ValidRoleName String name) {
 }

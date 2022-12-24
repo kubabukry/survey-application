@@ -1,4 +1,6 @@
 package com.example.survey.dto;
 
-public record QuestionCreationDto(String name){}
+import com.example.survey.validation.ValidName;
+
+public record QuestionCreationDto(@ValidName String name){}
 

@@ -1,4 +1,12 @@
 package com.example.survey.dto;
 
-public record CreateCompanySurveyDto(Long idCompany, Long idSurveyTemplate, Boolean isHidden) {
+import javax.validation.constraints.NotNull;
+
+public record CreateCompanySurveyDto(
+        @NotNull
+        Long idCompany,
+        @NotNull
+        Long idSurveyTemplate,
+        @NotNull
+        Boolean isHidden) {
 }

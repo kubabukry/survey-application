@@ -8,8 +8,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Documented
-@Size(min = 2, max = 32, message = "name must be between 2 and 32 characters long")
+@Size(min = 3, max = 32, message = "category name must be between 3 and 32 characters long")
 @NotBlank(message = "name is mandatory")
-@Pattern(regexp = "^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\s]+\\S$", message = "name can contain only letters")
-public @interface ValidUserName {
+@Pattern(regexp = "^\\S.*\\S$", message = "name can't start or end with whitespace")
+public @interface ValidName {
 }

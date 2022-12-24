@@ -1,4 +1,11 @@
 package com.example.survey.dto;
 
-public record CompanyVerificationDto(Long id, Boolean isVerified) {
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+public record CompanyVerificationDto(
+        @NotNull
+        Long id,
+        @NotNull
+        Boolean isVerified) {
 }

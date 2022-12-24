@@ -1,11 +1,11 @@
 package com.example.survey.dto;
 
-import com.example.survey.validation.ValidCategoryDescription;
-import com.example.survey.validation.ValidCategoryName;
+import com.example.survey.validation.ValidDescription;
+import com.example.survey.validation.ValidName;
 
 public record CategoryCreationDto(
-        @ValidCategoryDescription
+        @ValidDescription
         String description,
-        @ValidCategoryName
+        @ValidName
         String name) {
 }

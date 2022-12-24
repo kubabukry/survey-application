@@ -1,4 +1,12 @@
 package com.example.survey.dto;
 
-public record QuestionDto(Long id, String name) {
+import com.example.survey.validation.ValidName;
+
+import javax.validation.constraints.NotNull;
+
+public record QuestionDto(
+        @NotNull
+        Long id,
+        @ValidName
+        String name) {
 }

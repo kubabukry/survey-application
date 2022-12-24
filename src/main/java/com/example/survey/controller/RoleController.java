@@ -3,14 +3,10 @@ package com.example.survey.controller;
 import com.example.survey.dto.RegisteredUserRoleDto;
 import com.example.survey.dto.RoleDto;
 import com.example.survey.dto.RoleNameDto;
-import com.example.survey.exception.ErrorResponse;
-import com.example.survey.exception.NoSuchRoleExistsException;
-import com.example.survey.exception.RoleAlreadyExistsException;
-import com.example.survey.exception.RoleIsInUseException;
 import com.example.survey.service.RoleService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.survey.mapper.RoleMapper.mapRoleListToRoleDtoList;
@@ -25,7 +21,7 @@ public class RoleController {
     }
 
     @PostMapping("/roles")
-    public void createRole(@RequestBody RoleNameDto roleNameDto){
+    public void createRole(@Valid @RequestBody RoleNameDto roleNameDto){
         roleService.addRole(roleNameDto);
     }
 
@@ -45,12 +41,12 @@ public class RoleController {
     }
 
     @PutMapping("/roles/{id}")
-    public void updateRole(@RequestBody RoleDto roleDto){
+    public void updateRole(@Valid @RequestBody RoleDto roleDto){
         roleService.updateRole(roleDto);
     }
 
     @PutMapping("/roles/user")       //jaki endpoint?
-    public void setRegisteredUserRole(@RequestBody RegisteredUserRoleDto registeredUserRoleDto){
+    public void setRegisteredUserRole(@Valid @RequestBody RegisteredUserRoleDto registeredUserRoleDto){
         roleService.setRegisteredUserRole(registeredUserRoleDto);
     }
 }

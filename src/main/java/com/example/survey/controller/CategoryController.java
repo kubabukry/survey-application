@@ -10,6 +10,7 @@ import com.example.survey.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.survey.mapper.CategoryMapper.*;
@@ -32,7 +33,7 @@ public class CategoryController {
     }
 
     @PostMapping("/categories")
-    public CategoryCreationDto createCategory(@RequestBody CategoryCreationDto categoryCreationDto){
+    public CategoryCreationDto createCategory(@Valid @RequestBody CategoryCreationDto categoryCreationDto){
         return mapCategoryToCategoryCreationDto(categoryService.createCategory(categoryCreationDto));
     }
 
@@ -42,7 +43,7 @@ public class CategoryController {
     }
 
     @PutMapping("/categories/{id}")
-    public CategoryDto updateCategory(@RequestBody CategoryDto categoryDto){
+    public CategoryDto updateCategory(@Valid @RequestBody CategoryDto categoryDto){
         return mapCategoryToCategoryDto(categoryService.updateCategory(categoryDto));
     }
 }

@@ -11,6 +11,7 @@ import com.example.survey.service.QuestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.survey.mapper.QuestionMapper.mapQuestionToQuestionDto;
@@ -35,11 +36,11 @@ public class QuestionController {
         return mapQuestionToQuestionDto(questionService.getSingleQuestion(id));
     }
     @PostMapping("/questions")
-    public QuestionDto createQuestion(@RequestBody QuestionCreationDto questionCreationDto){
+    public QuestionDto createQuestion(@Valid @RequestBody QuestionCreationDto questionCreationDto){
         return mapQuestionToQuestionDto(questionService.createQuestion(questionCreationDto));
     }
     @PutMapping("/questions/{id}")
-    public QuestionDto updateQuestion(@RequestBody QuestionDto questionDto){
+    public QuestionDto updateQuestion(@Valid @RequestBody QuestionDto questionDto){
         return mapQuestionToQuestionDto(questionService.updateQuestion(questionDto));
     }
 

@@ -5,6 +5,8 @@ import com.example.survey.dto.ScoreResponseDto;
 import com.example.survey.service.StatisticsService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.example.survey.mapper.ScoreMapper.mapScoreToScoreResponseDto;
 
 @RestController
@@ -16,7 +18,7 @@ public class StatisticsController {
 
     @PostMapping("/survey-score")
     @ResponseBody
-    public ScoreResponseDto getAverageScoreForSurvey(@RequestBody AverageScoreForSurveyDto averageScoreForSurveyDto){
+    public ScoreResponseDto getAverageScoreForSurvey(@Valid @RequestBody AverageScoreForSurveyDto averageScoreForSurveyDto){
         return mapScoreToScoreResponseDto(statisticsService.getAverageScoreForSurvey(averageScoreForSurveyDto));
     }
 

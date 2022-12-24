@@ -1,4 +1,10 @@
 package com.example.survey.dto;
 
-public record AverageScoreForSurveyDto(Long idUser, Long idCompanySurvey) {
+import javax.validation.constraints.NotNull;
+
+public record AverageScoreForSurveyDto(
+        @NotNull
+        Long idUser,
+        @NotNull
+        Long idCompanySurvey) {
 }

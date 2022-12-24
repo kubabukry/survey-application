@@ -8,6 +8,7 @@ import com.example.survey.service.CompanyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.survey.mapper.CompanyMapper.mapCompanyListToCompanyDtoList;
@@ -28,12 +29,12 @@ public class CompanyController {
     }
 
     @PostMapping("/companies")
-    public CompanyDto createCompany(@RequestBody CompanyCreationDto companyCreationDto){
+    public CompanyDto createCompany(@Valid @RequestBody CompanyCreationDto companyCreationDto){
         return mapCompanyToCompanyDto(companyService.createCompany(companyCreationDto));
     }
 
     @PutMapping("/companies/{id}")
-    public CompanyDto updateCompany(@RequestBody CompanyDto companyDto){
+    public CompanyDto updateCompany(@Valid @RequestBody CompanyDto companyDto){
         return mapCompanyToCompanyDto(companyService.updateCompany(companyDto));
     }
 
@@ -43,7 +44,7 @@ public class CompanyController {
     }
 
     @PutMapping("/companies/{id}/verify")
-    public void verifyCompany(@RequestBody CompanyVerificationDto companyVerificationDto){
+    public void verifyCompany(@Valid @RequestBody CompanyVerificationDto companyVerificationDto){
         companyService.verifyCompany(companyVerificationDto);
     }
     @DeleteMapping("/companies/{id}")
