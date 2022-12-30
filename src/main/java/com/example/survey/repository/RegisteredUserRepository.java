@@ -15,4 +15,5 @@ public interface RegisteredUserRepository extends JpaRepository<RegisteredUser, 
     Boolean existsByLogin (String login);
     Boolean existsByMail (String name);
 
+    RegisteredUser findByLogin(String username);
 }

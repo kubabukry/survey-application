@@ -5,9 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor
@@ -32,7 +35,7 @@ public class RegisteredUser {   //changed from User to RegisteredUser
 
     private Boolean isActive;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)                         //no Session error w przyapdku lazy przy autentykacji
     @JoinColumn(name = "idRole", referencedColumnName = "id")
     @JsonIgnore                          //blad bez JsonIgnore
     private Role role;
@@ -40,4 +43,8 @@ public class RegisteredUser {   //changed from User to RegisteredUser
     @OneToMany(mappedBy = "idUser")      //do sprawdzenia
     @JsonIgnore
     private List<SurveyAnswer> surveyAnswerList;
+
+    //todo zaimplementowane z security, nie wszystkie metody będą implementowane
+
+
 }

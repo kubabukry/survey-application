@@ -12,16 +12,28 @@ import com.example.survey.model.Role;
 import com.example.survey.repository.RegisteredUserRepository;
 import com.example.survey.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RegisteredUserService {
+public class RegisteredUserService implements UserDetailsService{
     private final RegisteredUserRepository registeredUserRepository;
     private final RoleRepository roleRepository;
 
+    private final PasswordEncoder passwordEncoder;
     public List<RegisteredUser> getRegisteredUsers() {
         return registeredUserRepository.findAll();
     }
@@ -41,7 +53,8 @@ public class RegisteredUserService {
         Role role = roleRepository.findDistinctByName("registered_user");
 
         registeredUser.setLogin(registeredUserRegistrationDto.login());
-        registeredUser.setPassword(registeredUserRegistrationDto.password());
+        //todo haslo jest szyfrowane
+        registeredUser.setPassword(passwordEncoder.encode(registeredUserRegistrationDto.password()));
         registeredUser.setName(registeredUserRegistrationDto.name());
         registeredUser.setMail(registeredUserRegistrationDto.mail());
         registeredUser.setIsActive(false);
@@ -76,6 +89,7 @@ public class RegisteredUserService {
 
         registeredUser.setId(registeredUserDto.id());
         registeredUser.setLogin(registeredUserDto.login());
+        //todo zmiana hasla możliwa w update?
         registeredUser.setPassword(registeredUserRepository.findDistinctById(registeredUserDto.id()).getPassword());
 
         registeredUser.setName(registeredUserDto.name());
@@ -112,6 +126,19 @@ public class RegisteredUserService {
         registeredUserRepository.save(registeredUser);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws NoSuchRegisteredUserException {
+        RegisteredUser registeredUser = registeredUserRepository.findByLogin(username);
+        if(registeredUser==null)
+            throw new NoSuchRegisteredUserException("No user with login "+username+" found");
+
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        String roleName = registeredUser.getRole().getName();
+        authorities.add(new SimpleGrantedAuthority(roleName));
+
+        return new User(registeredUser.getLogin(), registeredUser.getPassword(), authorities);
+    }
+
 
     //getRegisteredUser(): getRegisteredUserById() +
     //updateRegisteredUser() +
@@ -121,6 +148,4 @@ public class RegisteredUserService {
     //changePassword() +
     //login()
     //setCompany()
-
-    //todo dodac walidacje pol i obsluge bledow
 }
