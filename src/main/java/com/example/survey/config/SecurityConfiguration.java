@@ -1,6 +1,7 @@
 package com.example.survey.config;
 
 import com.example.survey.filters.CustomAuthenticationFilter;
+import com.example.survey.filters.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @EnableWebSecurity
@@ -32,14 +34,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //todo custom endpoint dla logowania, domyślnie "/login"
 //        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
-//        customAuthenticationFilter.setFilterProcessesUrl("/survey/login");
+//        customAuthenticationFilter.setFilterProcessesUrl("/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/login").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/categories").hasAnyAuthority("registered_user");
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/categories").hasAnyAuthority("admin");
+        http.authorizeRequests().antMatchers("/login/**", "/users/refresh-token/**")
+                .anonymous()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+//                .defaultSuccessUrl("/login/successful")
+//                .loginProcessingUrl("/login")
+//                .failureUrl("/login/failed")
+                .permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/categories/**").hasAnyAuthority("registered_user", "admin");
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/categories/**").hasAnyAuthority("admin");
+        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/categories/**").hasAnyAuthority("admin");
+        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/categories/**").hasAnyAuthority("admin");
+
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/companies/**").hasAnyAuthority("registered_user", "admin");
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/companies/**").hasAnyAuthority("registered_user", "admin");
+        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/companies/{id}").hasAnyAuthority("registered_user", "admin");
+        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/companies/{id}/verify").hasAnyAuthority("admin");
+        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/companies/**").hasAnyAuthority("registered_user", "admin");
+        //todo reszta endpointow
+
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.httpBasic();
     }
 

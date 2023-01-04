@@ -1,5 +1,9 @@
 package com.example.survey.service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.survey.dto.RegisteredUserActivationDto;
 import com.example.survey.dto.RegisteredUserChangePasswordDto;
 import com.example.survey.dto.RegisteredUserDto;
@@ -11,21 +15,28 @@ import com.example.survey.model.RegisteredUser;
 import com.example.survey.model.Role;
 import com.example.survey.repository.RegisteredUserRepository;
 import com.example.survey.repository.RoleRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Service
 @RequiredArgsConstructor
@@ -78,10 +89,10 @@ public class RegisteredUserService implements UserDetailsService{
 
         Boolean loginExists = registeredUserRepository.existsByLogin(registeredUserDto.login());
         Boolean mailExists = registeredUserRepository.existsByMail(registeredUserDto.mail());
-        if(loginExists)
+        if(loginExists && !registeredUser.getLogin().equals(registeredUserDto.login()))
             throw new LoginAlreadyInUseException(
                     "Login "+registeredUserDto.login()+" already in use");
-        if(mailExists)
+        if(mailExists && !registeredUser.getMail().equals(registeredUserDto.mail()))
             throw new MailAlreadyInUseException(
                     "Mail "+registeredUserDto.mail()+" already in use");
 
@@ -137,6 +148,46 @@ public class RegisteredUserService implements UserDetailsService{
         authorities.add(new SimpleGrantedAuthority(roleName));
 
         return new User(registeredUser.getLogin(), registeredUser.getPassword(), authorities);
+    }
+
+    //todo edit exception
+    //po wygasnieciu refresh token user bedzie musial sie znowu zalogowac
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+            try{
+                String token = authorizationHeader.substring("Bearer ".length());
+                //todo use utility class instead
+                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                JWTVerifier verifier = JWT.require(algorithm).build();
+                DecodedJWT decodedJWT = verifier.verify(token);
+                String username = decodedJWT.getSubject();
+                RegisteredUser registeredUser = registeredUserRepository.findByLogin(username);
+
+                String refresh_token = JWT.create()
+                        .withSubject(registeredUser.getLogin())
+                        .withExpiresAt(new Date(System.currentTimeMillis()+ 10 * 60 * 1000))        //10 minut
+                        .withIssuer(request.getRequestURL().toString())
+                        .withClaim("roles", registeredUser.getRole().getName())
+                        .sign(algorithm);
+
+                Map<String, String> tokens = new HashMap<>();
+                tokens.put("access_token", refresh_token);
+                tokens.put("refresh_token", refresh_token);
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
+            } catch (Exception e) {
+                response.setHeader("Error", e.getMessage());
+                response.setStatus(FORBIDDEN.value());
+//                    response.sendError(FORBIDDEN.value());
+                Map<String, String> error = new HashMap<>();
+                error.put("error_message", e.getMessage());
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), error);
+            }
+        } else
+            throw new RuntimeException("Refresh token missing");
     }
 
 

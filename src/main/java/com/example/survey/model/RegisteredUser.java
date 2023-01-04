@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,8 +44,4 @@ public class RegisteredUser {   //changed from User to RegisteredUser
     @OneToMany(mappedBy = "idUser")      //do sprawdzenia
     @JsonIgnore
     private List<SurveyAnswer> surveyAnswerList;
-
-    //todo zaimplementowane z security, nie wszystkie metody będą implementowane
-
-
 }

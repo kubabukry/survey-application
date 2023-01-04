@@ -7,7 +7,10 @@ import com.example.survey.dto.RegisteredUserRegistrationDto;
 import com.example.survey.service.RegisteredUserService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 import static com.example.survey.mapper.RegisteredUserDtoMapper.mapRegisteredUserToRegisteredUserDto;
@@ -51,5 +54,10 @@ public class RegisteredUserController {
     @PutMapping("/users/{id}/password")
     public void changePassword(@Valid @RequestBody RegisteredUserChangePasswordDto registeredUserChangePasswordDto){
         registeredUserService.changePassword(registeredUserChangePasswordDto);
+    }
+
+    @GetMapping("/users/refresh-token")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        registeredUserService.refreshToken(request, response);
     }
 }
