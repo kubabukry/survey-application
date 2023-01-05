@@ -3,6 +3,7 @@ package com.example.survey.config;
 import com.example.survey.filters.CustomAuthenticationFilter;
 import com.example.survey.filters.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,6 +28,7 @@ import java.util.List;
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "survey", name = "security", havingValue = "true")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //todo zmienic zeby nie korzystalo z WebSecurityConfigurerAdapter jako dobra praktyka od Security 5
     private final UserDetailsService userDetailsService;
