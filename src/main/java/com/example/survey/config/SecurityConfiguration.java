@@ -21,8 +21,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 @EnableWebSecurity
@@ -31,6 +33,8 @@ import java.util.List;
 @ConditionalOnProperty(prefix = "survey", name = "security", havingValue = "true")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //todo zmienic zeby nie korzystalo z WebSecurityConfigurerAdapter jako dobra praktyka od Security 5
+
+    private static final Logger LOGGER = Logger.getLogger( SecurityConfiguration.class.getName() );
     private final UserDetailsService userDetailsService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -90,5 +94,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @PostConstruct
+    void postCreation(){
+        LOGGER.info("Security enabled!");
     }
 }
