@@ -2,6 +2,8 @@ package com.example.survey.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -18,5 +20,10 @@ public class Config {
                 .select()
                 .paths(PathSelectors.regex("^(?!/(error).*$).*$" ))
                 .build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }

@@ -22,7 +22,7 @@ public class CompanySurvey {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_surveyTemplate", referencedColumnName = "id")
+    @JoinColumn(name = "id_survey_template", referencedColumnName = "id")
     @JsonBackReference
     private SurveyTemplate surveyTemplate;
 

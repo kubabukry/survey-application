@@ -4,14 +4,13 @@ import com.example.survey.dto.RegisteredUserActivationDto;
 import com.example.survey.dto.RegisteredUserChangePasswordDto;
 import com.example.survey.dto.RegisteredUserDto;
 import com.example.survey.dto.RegisteredUserRegistrationDto;
-import com.example.survey.exception.ErrorResponse;
-import com.example.survey.exception.LoginAlreadyInUseException;
-import com.example.survey.exception.MailAlreadyInUseException;
-import com.example.survey.exception.NoSuchRegisteredUserException;
 import com.example.survey.service.RegisteredUserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 import static com.example.survey.mapper.RegisteredUserDtoMapper.mapRegisteredUserToRegisteredUserDto;
@@ -34,11 +33,11 @@ public class RegisteredUserController {
         return mapRegisteredUserToRegisteredUserDto(registeredUserService.getRegisteredUserById(id));
     }
     @PostMapping("/users")
-    public RegisteredUserDto addUser(@RequestBody RegisteredUserRegistrationDto registeredUserRegistrationDto){
+    public RegisteredUserDto addUser(@Valid @RequestBody RegisteredUserRegistrationDto registeredUserRegistrationDto){
         return mapRegisteredUserToRegisteredUserDto(registeredUserService.addRegisteredUser(registeredUserRegistrationDto));
     }
     @PutMapping("/users/{id}")
-    public RegisteredUserDto updateUser(@RequestBody RegisteredUserDto registeredUserDto){
+    public RegisteredUserDto updateUser(@Valid @RequestBody RegisteredUserDto registeredUserDto){
         return mapRegisteredUserToRegisteredUserDto(registeredUserService.updateRegisteredUser(registeredUserDto));
     }
 
@@ -48,12 +47,17 @@ public class RegisteredUserController {
     }
 
     @PutMapping("/users/{id}/activate")
-    public void activateUser(@RequestBody RegisteredUserActivationDto registeredUserActivationDto){
+    public void activateUser(@Valid @RequestBody RegisteredUserActivationDto registeredUserActivationDto){
         registeredUserService.activateRegisteredUser(registeredUserActivationDto);
     }
 
     @PutMapping("/users/{id}/password")
-    public void changePassword(@RequestBody RegisteredUserChangePasswordDto registeredUserChangePasswordDto){
+    public void changePassword(@Valid @RequestBody RegisteredUserChangePasswordDto registeredUserChangePasswordDto){
         registeredUserService.changePassword(registeredUserChangePasswordDto);
+    }
+
+    @GetMapping("/users/refresh-token")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        registeredUserService.refreshToken(request, response);
     }
 }

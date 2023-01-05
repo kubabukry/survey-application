@@ -1,4 +1,11 @@
 package com.example.survey.dto;
 
-public record CategoryCreationDto(String description, String name) {
+import com.example.survey.validation.ValidDescription;
+import com.example.survey.validation.ValidName;
+
+public record CategoryCreationDto(
+        @ValidDescription
+        String description,
+        @ValidName
+        String name) {
 }

@@ -1,10 +1,18 @@
 package com.example.survey.dto;
 
-public record RegisteredUserRegistrationDto(
-        String login,
+import com.example.survey.validation.PasswordComplexity;
+import com.example.survey.validation.ValidLogin;
+import com.example.survey.validation.ValidMail;
+import com.example.survey.validation.ValidUserName;
 
+public record RegisteredUserRegistrationDto(
+        @ValidLogin
+        String login,
+        @PasswordComplexity
         String password,
+        @ValidUserName
         String name,
+        @ValidMail
         String mail
 ) {
 }

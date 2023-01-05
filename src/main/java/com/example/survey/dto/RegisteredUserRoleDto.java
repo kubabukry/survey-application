@@ -1,4 +1,10 @@
 package com.example.survey.dto;
 
-public record RegisteredUserRoleDto(Long userId, Long roleId) {
+import javax.validation.constraints.NotNull;
+
+public record RegisteredUserRoleDto(
+        @NotNull
+        Long userId,
+        @NotNull
+        Long roleId) {
 }

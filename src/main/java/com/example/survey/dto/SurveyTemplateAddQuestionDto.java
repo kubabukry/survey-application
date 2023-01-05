@@ -1,4 +1,10 @@
 package com.example.survey.dto;
 
-public record SurveyTemplateAddQuestionDto(Long idSurveyTemplate, Long idQuestion) {
+import javax.validation.constraints.NotNull;
+
+public record SurveyTemplateAddQuestionDto(
+        @NotNull
+        Long idSurveyTemplate,
+        @NotNull
+        Long idQuestion) {
 }

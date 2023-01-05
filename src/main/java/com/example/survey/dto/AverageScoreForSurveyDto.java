@@ -2,9 +2,9 @@ package com.example.survey.dto;
 
 import javax.validation.constraints.NotNull;
 
-public record CompanySurveyVisibilityDto(
+public record AverageScoreForSurveyDto(
         @NotNull
-        Long id,
+        Long idUser,
         @NotNull
-        Boolean isHidden) {
+        Long idCompanySurvey) {
 }

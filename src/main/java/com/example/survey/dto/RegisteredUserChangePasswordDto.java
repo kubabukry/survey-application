@@ -1,4 +1,11 @@
 package com.example.survey.dto;
 
-public record RegisteredUserChangePasswordDto(Long id, String password) {
+import com.example.survey.validation.PasswordComplexity;
+import javax.validation.constraints.NotNull;
+
+public record RegisteredUserChangePasswordDto(
+        @NotNull
+        Long id,
+        @PasswordComplexity
+        String password) {
 }

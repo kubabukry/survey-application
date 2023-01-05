@@ -5,6 +5,8 @@ import com.example.survey.model.SurveyTemplate;
 import com.example.survey.service.SurveyService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.example.survey.mapper.SurveyTemplateMapper.mapSurveyTemplateListToSurveyTemplateDtoList;
 import static com.example.survey.mapper.SurveyTemplateMapper.mapSurveyTemplateToSurveyTemplateDto;
 import static com.example.survey.mapper.CompanySurveyMapper.mapCompanySurveyToCompanySurveyDto;
@@ -30,39 +32,33 @@ public class SurveyController {
         return mapSurveyTemplateToSurveyTemplateDto(surveyService.getSingleSurveyTemplate(id));
     }
 
-
-//    @PutMapping("/survey/answer")
-//    public AnswerQuestionDto answerQuestion(@RequestBody AnswerQuestionDto answerQuestionDto){
-//        return mapSurveyAnswerToAnswerQuestionDto(surveyService.answerQuestion(answerQuestionDto));
-//    }
-
     @PostMapping("/survey-templates")
-    public SurveyTemplate createSurveyTemplate(@RequestBody SurveyTemplateCreationDto surveyTemplateCreationDto){
+    public SurveyTemplate createSurveyTemplate(@Valid @RequestBody SurveyTemplateCreationDto surveyTemplateCreationDto){
         return surveyService.createSurveyTemplate(surveyTemplateCreationDto);
     }
 
     @PutMapping("/survey-templates")
-    public SurveyTemplateDto updateSurveyTemplate(@RequestBody SurveyTemplateDto surveyTemplateDto){
+    public SurveyTemplateDto updateSurveyTemplate(@Valid @RequestBody SurveyTemplateDto surveyTemplateDto){
         return mapSurveyTemplateToSurveyTemplateDto(surveyService.updateSurveyTemplate(surveyTemplateDto));
     }
 
     @PutMapping("/survey-templates/add-question")
-    public SurveyTemplateDto addQuestionToSurveyTemplate(@RequestBody SurveyTemplateAddQuestionDto surveyTemplateAddQuestionDto){
+    public SurveyTemplateDto addQuestionToSurveyTemplate(@Valid @RequestBody SurveyTemplateAddQuestionDto surveyTemplateAddQuestionDto){
         return mapSurveyTemplateToSurveyTemplateDto(surveyService.addQuestionToSurveyTemplate(surveyTemplateAddQuestionDto));
     }
 
     @PostMapping("/company-survey")
-    public CompanySurveyDto createCompanySurvey(@RequestBody CreateCompanySurveyDto createCompanySurveyDto){
+    public CompanySurveyDto createCompanySurvey(@Valid @RequestBody CreateCompanySurveyDto createCompanySurveyDto){
         return mapCompanySurveyToCompanySurveyDto(surveyService.createCompanySurvey(createCompanySurveyDto));
     }
 
     @PutMapping("/company-survey/set-visibility")
-    public CompanySurveyDto setCompanySurveyVisibility(@RequestBody CompanySurveyVisibilityDto companySurveyVisibilityDto){
+    public CompanySurveyDto setCompanySurveyVisibility(@Valid @RequestBody CompanySurveyVisibilityDto companySurveyVisibilityDto){
         return mapCompanySurveyToCompanySurveyDto(surveyService.setCompanySurveyVisibility(companySurveyVisibilityDto));
     }
 
     @PostMapping("/survey-answer")
-    public SurveyAnswerDto answerQuestion(@RequestBody AnswerQuestionDto answerQuestionDto){
+    public SurveyAnswerDto answerQuestion(@Valid @RequestBody AnswerQuestionDto answerQuestionDto){
         return mapSurveyAnswerToSurveyAnswerDto(surveyService.answerQuestion(answerQuestionDto));
     }
 

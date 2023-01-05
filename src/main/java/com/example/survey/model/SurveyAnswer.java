@@ -21,14 +21,14 @@ public class SurveyAnswer {
     private Integer rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idCompanySurvey", referencedColumnName = "id")
+    @JoinColumn(name = "id_company_survey", referencedColumnName = "id")
     private CompanySurvey companySurvey;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idQuestion", referencedColumnName = "id")
+    @JoinColumn(name = "id_question", referencedColumnName = "id")
     private Question question;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUser", referencedColumnName = "id")
+    @JoinColumn(name = "id_user", referencedColumnName = "id")
     private RegisteredUser idUser;
 }
