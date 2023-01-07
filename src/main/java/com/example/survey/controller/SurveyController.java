@@ -76,4 +76,9 @@ public class SurveyController {
     public void deleteSurveyTemplate(@PathVariable Long id){
         surveyService.deleteSurveyTemplate(id);
     }
+
+    @PutMapping("/answer-survey")
+    public void answerSurvey(@RequestBody AnswerSurveyDto answerSurveyDto){
+        surveyService.answerSurvey(answerSurveyDto);
+    }
 }

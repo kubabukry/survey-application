@@ -210,6 +210,29 @@ public class SurveyService {
 
     }
 
+    //todo dodac wyjatki (user juz odpowiedzial na pytanie) i moze inne?
+    public void answerSurvey(AnswerSurveyDto answerSurveyDto) {
+        CompanySurvey companySurvey = companySurveyRepository.findById(answerSurveyDto.idCompanySurvey())
+                .orElseThrow(() -> new NoSuchCompanySurveyExistsException(
+                        "No such company survey with id = "+answerSurveyDto.idCompanySurvey()+" exists"));
+        RegisteredUser registeredUser = registeredUserRepository.findById(answerSurveyDto.idUser())
+                .orElseThrow(() -> new NoSuchRegisteredUserException(
+                        "No registered user present with id: "+answerSurveyDto.idUser()));
+        answerSurveyDto
+                .answerBodyDtoList()
+                .stream()
+                .forEach(answerBodyDto -> {
+                    SurveyAnswer surveyAnswer = new SurveyAnswer();
+                    surveyAnswer.setCompanySurvey(companySurvey);
+                    surveyAnswer.setIdUser(registeredUser);
+                    surveyAnswer.setQuestion(questionRepository.findById(answerBodyDto.idQuestion())
+                            .orElseThrow(() -> new NoSuchQuestionExistsException(
+                                    "No such question with id = " + answerBodyDto.idQuestion() + " exists")));
+                    surveyAnswer.setRating(answerBodyDto.rating());
+                    surveyAnswerRepository.save(surveyAnswer);
+                });
+    }
+
     //createSurveyTemplate() +
     //bedzie to robil admin/moderator?
 
