@@ -67,6 +67,11 @@ public class SurveyController {
         return mapSurveyAnswerToSurveyAnswerDto(surveyService.getSingleSurveyAnswer(id));
     }
 
+    @GetMapping("/company-survey/{id}")
+    public SurveyDto getCompanySurvey(@PathVariable Long id){
+        return surveyService.getCompanySurvey(id);
+    }
+
     @DeleteMapping("/survey-templates/{id}")
     public void deleteSurveyTemplate(@PathVariable Long id){
         surveyService.deleteSurveyTemplate(id);

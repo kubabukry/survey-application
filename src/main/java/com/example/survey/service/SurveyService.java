@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.survey.mapper.QuestionMapper.mapQuestionToQuestionDto;
+
 @Service
 @RequiredArgsConstructor
 public class SurveyService {
@@ -22,19 +24,12 @@ public class SurveyService {
 
     private final CompanyRepository companyRepository;
 
-    private CompanyService companyService;
-
     private final QuestionRepository questionRepository;
 
-    private QuestionService questionService;
 
     private final CompanySurveyRepository companySurveyRepository;
 
-    private RegisteredUserService registeredUserService;
-
     private final SurveyTemplateRepository surveyTemplateRepository;
-
-    private CategoryService categoryService;
 
     //todo zmienić to po zaimplementowaniu logowania - ma pobierać
 //  hardcodedUid do answerQuestion() dopóki nie ma logowania
@@ -194,6 +189,25 @@ public class SurveyService {
         return surveyAnswerRepository.findById(id)
                 .orElseThrow(() -> new NoSuchSurveySurveyAnswerExistsException(
                         "No such survey answer with id = "+id+" exists"));
+    }
+
+    public SurveyDto getCompanySurvey(Long id) {
+        CompanySurvey companySurvey = companySurveyRepository.findById(id)
+                .orElseThrow(() -> new NoSuchCompanySurveyExistsException(
+                        "No such company survey with id = "+id+" exists"));
+        List<QuestionDto> questionDtoList = companySurvey
+                .getSurveyTemplate()
+                .getQuestionList()
+                .stream()
+                .map(question -> mapQuestionToQuestionDto(question))
+                .collect(Collectors.toList());
+
+            return new SurveyDto(
+            companySurvey.getId(),
+            companySurvey.getCompany().getName(),
+            companySurvey.getSurveyTemplate().getCategory().getName(),
+            questionDtoList);
+
     }
 
     //createSurveyTemplate() +
