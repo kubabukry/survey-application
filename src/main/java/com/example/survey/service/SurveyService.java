@@ -219,7 +219,7 @@ public class SurveyService {
                 .orElseThrow(() -> new NoSuchRegisteredUserException(
                         "No registered user present with id: "+answerSurveyDto.idUser()));
         answerSurveyDto
-                .answerBodyDtoList()
+                .answers()
                 .stream()
                 .forEach(answerBodyDto -> {
                     SurveyAnswer surveyAnswer = new SurveyAnswer();
