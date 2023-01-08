@@ -191,6 +191,7 @@ public class SurveyService {
                         "No such survey answer with id = "+id+" exists"));
     }
 
+    //todo get data with one query
     public SurveyDto getCompanySurvey(Long id) {
         CompanySurvey companySurvey = companySurveyRepository.findById(id)
                 .orElseThrow(() -> new NoSuchCompanySurveyExistsException(
