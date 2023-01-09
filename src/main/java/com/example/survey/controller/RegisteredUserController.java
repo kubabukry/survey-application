@@ -74,4 +74,9 @@ public class RegisteredUserController {
     public void fakeLogout() {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
+
+    @GetMapping("/users/details/{login}")
+    public RegisteredUserDto getUserDetails(@PathVariable String login){
+        return mapRegisteredUserToRegisteredUserDto(registeredUserService.getUserDetails(login));
+    }
 }

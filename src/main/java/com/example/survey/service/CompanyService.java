@@ -3,23 +3,25 @@ package com.example.survey.service;
 import com.example.survey.dto.CompanyCreationDto;
 import com.example.survey.dto.CompanyDto;
 import com.example.survey.dto.CompanyVerificationDto;
-import com.example.survey.exception.CompanyNameAlreadyInUseException;
-import com.example.survey.exception.CompanyNipAlreadyInUseException;
-import com.example.survey.exception.NoSuchCompanyExistsException;
-import com.example.survey.exception.NoSuchRegisteredUserException;
+import com.example.survey.exception.*;
+import com.example.survey.model.Category;
 import com.example.survey.model.Company;
 import com.example.survey.model.RegisteredUser;
+import com.example.survey.repository.CategoryRepository;
 import com.example.survey.repository.CompanyRepository;
 import com.example.survey.repository.RegisteredUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
     private final CompanyRepository companyRepository;
+
+    private final CategoryRepository categoryRepository;
     private final RegisteredUserRepository registeredUserRepository;
 
     public List<Company> getCompanies() {
@@ -98,6 +100,18 @@ public class CompanyService {
     public void deleteCompany(Long id) {
         if(companyRepository.existsById(id))
             companyRepository.deleteById(id);
+    }
+
+    public List<Company> getCompaniesByCategoryId(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NoSuchCategoryExistsException("No category present with id = "+categoryId));
+
+        List <Company> companies = new ArrayList<>();
+        category.getSurveyTemplateList()
+                .forEach(surveyTemplate -> surveyTemplate
+                        .getCompanySurvey()
+                        .forEach(companySurvey -> companies.add(companySurvey.getCompany())));
+        return companies;
     }
 
 

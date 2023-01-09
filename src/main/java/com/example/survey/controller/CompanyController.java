@@ -3,9 +3,7 @@ package com.example.survey.controller;
 import com.example.survey.dto.CompanyCreationDto;
 import com.example.survey.dto.CompanyDto;
 import com.example.survey.dto.CompanyVerificationDto;
-import com.example.survey.exception.*;
 import com.example.survey.service.CompanyService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,4 +49,9 @@ public class CompanyController {
     public void deleteCompany(@PathVariable Long id){
         companyService.deleteCompany(id);
     }
+
+    @GetMapping("/companies/category/{categoryId}")
+        public List<CompanyDto> getCompaniesCategory(@PathVariable Long categoryId){
+            return mapCompanyListToCompanyDtoList(companyService.getCompaniesByCategoryId(categoryId));
+        }
 }
