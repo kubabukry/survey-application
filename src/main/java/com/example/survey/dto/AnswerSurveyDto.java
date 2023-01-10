@@ -8,5 +8,5 @@ public record AnswerSurveyDto(
         Long idCompanySurvey,
         @NotNull
         Long idUser,
-        List<AnswerBodyDto> answerBodyDtoList) {
+        List<AnswerBodyDto> answers) {
 }
