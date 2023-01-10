@@ -23,7 +23,7 @@ public class Company {
 
     private String name;
 
-    private Long nip;
+    private String nip;     //nip changed to String
 
     private String address;
 

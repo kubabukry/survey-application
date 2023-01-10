@@ -13,7 +13,7 @@ public record CompanyDto(
         @ValidName
         String name,
         @ValidNip
-        Long nip,
+        String nip,
         @ValidAddress
         String address,
         @NotNull

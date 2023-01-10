@@ -17,7 +17,7 @@ public record CompanyCreationDto(
         String address,
 
         @ValidNip
-        Long nip,
+        String nip,
 
         @NotNull
         Long idUser) {
