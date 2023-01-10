@@ -190,6 +190,14 @@ public class RegisteredUserService implements UserDetailsService{
             throw new RuntimeException("Refresh token missing");
     }
 
+    public RegisteredUser getUserDetails(String login) {
+        Boolean existsByLogin = registeredUserRepository.existsByLogin(login);
+        if(!existsByLogin)
+            throw new NoSuchRegisteredUserException("No such registered user with login: "+login+" exists");
+        RegisteredUser registeredUser = registeredUserRepository.findByLogin(login);
+        return registeredUser;
+    }
+
 
     //getRegisteredUser(): getRegisteredUserById() +
     //updateRegisteredUser() +

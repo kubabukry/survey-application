@@ -3,23 +3,28 @@ package com.example.survey.service;
 import com.example.survey.dto.CompanyCreationDto;
 import com.example.survey.dto.CompanyDto;
 import com.example.survey.dto.CompanyVerificationDto;
-import com.example.survey.exception.CompanyNameAlreadyInUseException;
-import com.example.survey.exception.CompanyNipAlreadyInUseException;
-import com.example.survey.exception.NoSuchCompanyExistsException;
-import com.example.survey.exception.NoSuchRegisteredUserException;
+import com.example.survey.exception.*;
+import com.example.survey.model.Category;
 import com.example.survey.model.Company;
 import com.example.survey.model.RegisteredUser;
+import com.example.survey.model.Role;
+import com.example.survey.repository.CategoryRepository;
 import com.example.survey.repository.CompanyRepository;
 import com.example.survey.repository.RegisteredUserRepository;
+import com.example.survey.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
     private final CompanyRepository companyRepository;
+
+    private final RoleRepository roleRepository;
+    private final CategoryRepository categoryRepository;
     private final RegisteredUserRepository registeredUserRepository;
 
     public List<Company> getCompanies() {
@@ -43,6 +48,8 @@ public class CompanyService {
         RegisteredUser registeredUser = registeredUserRepository.findById(companyCreationDto.idUser())
                 .orElseThrow(() -> new NoSuchRegisteredUserException(
                         "No such user with id = "+companyCreationDto.idUser()+" exists"));
+        Role role = roleRepository.findDistinctByName("company");
+        registeredUser.setRole(role);
 
         Company company = new Company();
         company.setName(companyCreationDto.name());
@@ -70,7 +77,9 @@ public class CompanyService {
         RegisteredUser registeredUser = registeredUserRepository.findById(companyDto.idUser())
                 .orElseThrow(() -> new NoSuchRegisteredUserException("" +
                         "No such user with id = "+companyDto.idUser()+" exists"));
-
+        Role role = roleRepository.findDistinctByName("company");
+        registeredUser.setRole(role);
+        
         company.setId(companyDto.id());
         company.setAddress(companyDto.address());
         company.setIsVerified(companyDto.isVerified());
@@ -98,6 +107,18 @@ public class CompanyService {
     public void deleteCompany(Long id) {
         if(companyRepository.existsById(id))
             companyRepository.deleteById(id);
+    }
+
+    public List<Company> getCompaniesByCategoryId(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NoSuchCategoryExistsException("No category present with id = "+categoryId));
+
+        List <Company> companies = new ArrayList<>();
+        category.getSurveyTemplateList()
+                .forEach(surveyTemplate -> surveyTemplate
+                        .getCompanySurvey()
+                        .forEach(companySurvey -> companies.add(companySurvey.getCompany())));
+        return companies;
     }
 
 

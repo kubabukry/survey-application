@@ -5,6 +5,8 @@ import com.example.survey.dto.RegisteredUserChangePasswordDto;
 import com.example.survey.dto.RegisteredUserDto;
 import com.example.survey.dto.RegisteredUserRegistrationDto;
 import com.example.survey.service.RegisteredUserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,5 +61,22 @@ public class RegisteredUserController {
     @GetMapping("/users/refresh-token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         registeredUserService.refreshToken(request, response);
+    }
+
+    @ApiOperation("Login.")
+    @PostMapping("/login")
+    public void fakeLogin(@ApiParam("User") @RequestParam String login, @ApiParam("Password") @RequestParam String password) {
+        throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
+    }
+
+    @ApiOperation("Logout.")
+    @PostMapping("/logout")
+    public void fakeLogout() {
+        throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
+    }
+
+    @GetMapping("/users/details/{login}")
+    public RegisteredUserDto getUserDetails(@PathVariable String login){
+        return mapRegisteredUserToRegisteredUserDto(registeredUserService.getUserDetails(login));
     }
 }
