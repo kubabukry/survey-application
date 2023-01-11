@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import static com.example.survey.mapper.SurveyTemplateMapper.mapSurveyTemplateListToSurveyTemplateDtoList;
 import static com.example.survey.mapper.SurveyTemplateMapper.mapSurveyTemplateToSurveyTemplateDto;
+import static com.example.survey.mapper.SurveyTemplateMapper.mapSurveyTemplateListToSurveyTemplateQuestionsDtoList;
 import static com.example.survey.mapper.CompanySurveyMapper.mapCompanySurveyToCompanySurveyDto;
 import static com.example.survey.mapper.SurveyAnswerMapper.mapSurveyAnswerToSurveyAnswerDto;
 
@@ -80,5 +81,10 @@ public class SurveyController {
     @PutMapping("/answer-survey")
     public void answerSurvey(@RequestBody AnswerSurveyDto answerSurveyDto){
         surveyService.answerSurvey(answerSurveyDto);
+    }
+
+    @GetMapping("/survey-templates/questions")
+    public List<SurveyTemplateQuestionsDto> getSurveyTemplateQuestions(){
+        return mapSurveyTemplateListToSurveyTemplateQuestionsDtoList(surveyService.getSurveyTemplates());
     }
 }
