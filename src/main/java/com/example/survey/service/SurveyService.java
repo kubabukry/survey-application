@@ -1,16 +1,48 @@
 package com.example.survey.service;
 
-import com.example.survey.dto.*;
-import com.example.survey.exception.*;
-import com.example.survey.model.*;
-import com.example.survey.repository.*;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import static com.example.survey.mapper.QuestionMapper.mapQuestionToQuestionDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.survey.mapper.QuestionMapper.mapQuestionToQuestionDto;
+import org.springframework.stereotype.Service;
+
+import com.example.survey.dto.AnswerQuestionDto;
+import com.example.survey.dto.AnswerSurveyDto;
+import com.example.survey.dto.CompanySurveyVisibilityDto;
+import com.example.survey.dto.CreateCompanySurveyDto;
+import com.example.survey.dto.QuestionDto;
+import com.example.survey.dto.SurveyDto;
+import com.example.survey.dto.SurveyTemplateAddQuestionDto;
+import com.example.survey.dto.SurveyTemplateCreationDto;
+import com.example.survey.dto.SurveyTemplateDto;
+import com.example.survey.exception.CompanyAlreadyUsedTemplateException;
+import com.example.survey.exception.NoSuchCategoryExistsException;
+import com.example.survey.exception.NoSuchCompanyExistsException;
+import com.example.survey.exception.NoSuchCompanySurveyExistsException;
+import com.example.survey.exception.NoSuchQuestionExistsException;
+import com.example.survey.exception.NoSuchRegisteredUserException;
+import com.example.survey.exception.NoSuchSurveySurveyAnswerExistsException;
+import com.example.survey.exception.NoSuchSurveyTemplateExistsException;
+import com.example.survey.exception.QuestionAlreadyAnsweredException;
+import com.example.survey.exception.QuestionAlreadyExistsException;
+import com.example.survey.exception.TitleAlreadyExistsException;
+import com.example.survey.model.Category;
+import com.example.survey.model.Company;
+import com.example.survey.model.CompanySurvey;
+import com.example.survey.model.Question;
+import com.example.survey.model.RegisteredUser;
+import com.example.survey.model.SurveyAnswer;
+import com.example.survey.model.SurveyTemplate;
+import com.example.survey.repository.CategoryRepository;
+import com.example.survey.repository.CompanyRepository;
+import com.example.survey.repository.CompanySurveyRepository;
+import com.example.survey.repository.QuestionRepository;
+import com.example.survey.repository.RegisteredUserRepository;
+import com.example.survey.repository.SurveyAnswerRepository;
+import com.example.survey.repository.SurveyTemplateRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

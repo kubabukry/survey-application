@@ -1,10 +1,15 @@
 package com.example.survey.validation;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.lang.annotation.*;
 
 //RFC 5322 standard expression ^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$
 

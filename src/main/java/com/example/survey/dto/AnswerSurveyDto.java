@@ -1,7 +1,8 @@
 package com.example.survey.dto;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 public record AnswerSurveyDto(
         @NotNull

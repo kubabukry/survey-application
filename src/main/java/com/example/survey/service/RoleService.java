@@ -1,6 +1,14 @@
 package com.example.survey.service;
 
-import com.example.survey.dto.*;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.example.survey.dto.RegisteredUserRoleDto;
+import com.example.survey.dto.RoleDto;
+import com.example.survey.dto.RoleNameDto;
 import com.example.survey.exception.NoSuchRoleExistsException;
 import com.example.survey.exception.RoleAlreadyExistsException;
 import com.example.survey.exception.RoleIsInUseException;
@@ -8,12 +16,8 @@ import com.example.survey.model.RegisteredUser;
 import com.example.survey.model.Role;
 import com.example.survey.repository.RegisteredUserRepository;
 import com.example.survey.repository.RoleRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

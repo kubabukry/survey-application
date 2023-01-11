@@ -1,5 +1,10 @@
 package com.example.survey.service;
 
+import java.text.DecimalFormat;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.example.survey.dto.AverageScoreForSurveyDto;
 import com.example.survey.exception.NoSuchCompanyExistsException;
 import com.example.survey.exception.NoSuchCompanySurveyExistsException;
@@ -7,19 +12,12 @@ import com.example.survey.exception.NoSuchRegisteredUserException;
 import com.example.survey.model.Company;
 import com.example.survey.model.CompanySurvey;
 import com.example.survey.model.RegisteredUser;
-import com.example.survey.model.SurveyAnswer;
 import com.example.survey.repository.CompanyRepository;
 import com.example.survey.repository.CompanySurveyRepository;
 import com.example.survey.repository.RegisteredUserRepository;
 import com.example.survey.repository.SurveyAnswerRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

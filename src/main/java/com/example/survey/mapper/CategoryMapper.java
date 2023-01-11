@@ -1,11 +1,11 @@
 package com.example.survey.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.example.survey.dto.CategoryCreationDto;
 import com.example.survey.dto.CategoryDto;
 import com.example.survey.model.Category;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CategoryMapper {
 

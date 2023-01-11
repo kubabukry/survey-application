@@ -1,10 +1,11 @@
 package com.example.survey.dto;
 
-import com.example.survey.validation.ValidDescription;
-import com.example.survey.validation.ValidName;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
+
+import com.example.survey.validation.ValidDescription;
+import com.example.survey.validation.ValidName;
 
 public record SurveyTemplateCreationDto(
         @ValidName

@@ -1,10 +1,10 @@
 package com.example.survey.mapper;
 
-import com.example.survey.dto.RegisteredUserDto;
-import com.example.survey.model.RegisteredUser;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.example.survey.dto.RegisteredUserDto;
+import com.example.survey.model.RegisteredUser;
 
 public class RegisteredUserDtoMapper {
 
