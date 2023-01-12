@@ -1,17 +1,15 @@
 package com.example.survey.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.example.survey.dto.CategoryCreationDto;
 import com.example.survey.dto.CategoryDto;
 import com.example.survey.exception.CategoryAlreadyExistsException;
 import com.example.survey.exception.NoSuchCategoryExistsException;
 import com.example.survey.model.Category;
 import com.example.survey.repository.CategoryRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

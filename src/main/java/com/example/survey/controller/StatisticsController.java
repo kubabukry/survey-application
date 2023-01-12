@@ -1,18 +1,13 @@
 package com.example.survey.controller;
 
-import static com.example.survey.mapper.ScoreMapper.mapScoreToScoreResponseDto;
-
-import javax.validation.Valid;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.survey.dto.AverageScoreForSurveyDto;
 import com.example.survey.dto.ScoreResponseDto;
 import com.example.survey.service.StatisticsService;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+import static com.example.survey.mapper.ScoreMapper.mapScoreToScoreResponseDto;
 
 @RestController
 public class StatisticsController {

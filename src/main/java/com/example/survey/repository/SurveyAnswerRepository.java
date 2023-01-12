@@ -1,12 +1,13 @@
 package com.example.survey.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import com.example.survey.model.CompanySurvey;
 import com.example.survey.model.Question;
 import com.example.survey.model.RegisteredUser;
 import com.example.survey.model.SurveyAnswer;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Set;
 
 @Repository
 public interface SurveyAnswerRepository extends JpaRepository<SurveyAnswer, Long> {

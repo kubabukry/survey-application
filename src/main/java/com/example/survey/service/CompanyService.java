@@ -1,18 +1,9 @@
 package com.example.survey.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.example.survey.dto.CompanyCreationDto;
 import com.example.survey.dto.CompanyDto;
 import com.example.survey.dto.CompanyVerificationDto;
-import com.example.survey.exception.CompanyNameAlreadyInUseException;
-import com.example.survey.exception.CompanyNipAlreadyInUseException;
-import com.example.survey.exception.NoSuchCategoryExistsException;
-import com.example.survey.exception.NoSuchCompanyExistsException;
-import com.example.survey.exception.NoSuchRegisteredUserException;
+import com.example.survey.exception.*;
 import com.example.survey.model.Category;
 import com.example.survey.model.Company;
 import com.example.survey.model.RegisteredUser;
@@ -21,8 +12,11 @@ import com.example.survey.repository.CategoryRepository;
 import com.example.survey.repository.CompanyRepository;
 import com.example.survey.repository.RegisteredUserRepository;
 import com.example.survey.repository.RoleRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -85,7 +79,7 @@ public class CompanyService {
                         "No such user with id = "+companyDto.idUser()+" exists"));
         Role role = roleRepository.findDistinctByName("company");
         registeredUser.setRole(role);
-
+        
         company.setId(companyDto.id());
         company.setAddress(companyDto.address());
         company.setIsVerified(companyDto.isVerified());

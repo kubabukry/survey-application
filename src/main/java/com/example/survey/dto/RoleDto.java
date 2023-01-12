@@ -1,8 +1,9 @@
 package com.example.survey.dto;
 
-import javax.validation.constraints.NotNull;
-
+import com.example.survey.validation.ValidName;
 import com.example.survey.validation.ValidRoleName;
+
+import javax.validation.constraints.NotNull;
 
 public record RoleDto(
         @NotNull

@@ -1,8 +1,6 @@
 package com.example.survey.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.example.survey.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,26 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.example.survey.exception.CategoryAlreadyExistsException;
-import com.example.survey.exception.CompanyAlreadyUsedTemplateException;
-import com.example.survey.exception.CompanyNameAlreadyInUseException;
-import com.example.survey.exception.CompanyNipAlreadyInUseException;
-import com.example.survey.exception.ErrorResponse;
-import com.example.survey.exception.LoginAlreadyInUseException;
-import com.example.survey.exception.MailAlreadyInUseException;
-import com.example.survey.exception.NoSuchCategoryExistsException;
-import com.example.survey.exception.NoSuchCompanyExistsException;
-import com.example.survey.exception.NoSuchCompanySurveyExistsException;
-import com.example.survey.exception.NoSuchQuestionExistsException;
-import com.example.survey.exception.NoSuchRegisteredUserException;
-import com.example.survey.exception.NoSuchRoleExistsException;
-import com.example.survey.exception.NoSuchSurveySurveyAnswerExistsException;
-import com.example.survey.exception.NoSuchSurveyTemplateExistsException;
-import com.example.survey.exception.QuestionAlreadyAnsweredException;
-import com.example.survey.exception.QuestionAlreadyExistsException;
-import com.example.survey.exception.RoleAlreadyExistsException;
-import com.example.survey.exception.RoleIsInUseException;
-import com.example.survey.exception.TitleAlreadyExistsException;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 @ResponseBody

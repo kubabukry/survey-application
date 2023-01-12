@@ -1,11 +1,8 @@
 package com.example.survey.config;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-
+import com.example.survey.filters.CustomAuthenticationFilter;
+import com.example.survey.filters.CustomAuthorizationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,10 +21,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.example.survey.filters.CustomAuthenticationFilter;
-import com.example.survey.filters.CustomAuthorizationFilter;
-
-import lombok.RequiredArgsConstructor;
+import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
 
 
 @EnableWebSecurity

@@ -1,10 +1,10 @@
 package com.example.survey.mapper;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.example.survey.dto.RoleDto;
 import com.example.survey.model.Role;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RoleMapper {
     public static RoleDto mapRoleToRoleDto(Role role){

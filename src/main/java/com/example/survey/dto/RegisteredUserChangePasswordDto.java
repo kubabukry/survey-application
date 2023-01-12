@@ -1,8 +1,7 @@
 package com.example.survey.dto;
 
-import javax.validation.constraints.NotNull;
-
 import com.example.survey.validation.PasswordComplexity;
+import javax.validation.constraints.NotNull;
 
 public record RegisteredUserChangePasswordDto(
         @NotNull
