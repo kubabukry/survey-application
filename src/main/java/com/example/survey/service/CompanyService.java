@@ -79,7 +79,7 @@ public class CompanyService {
                         "No such user with id = "+companyDto.idUser()+" exists"));
         Role role = roleRepository.findDistinctByName("company");
         registeredUser.setRole(role);
-        
+
         company.setId(companyDto.id());
         company.setAddress(companyDto.address());
         company.setIsVerified(companyDto.isVerified());
