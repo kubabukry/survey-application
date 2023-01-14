@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +48,7 @@ public class RegisteredUserService implements UserDetailsService{
     }
 
 
+    @Transactional
     public RegisteredUser addRegisteredUser(RegisteredUserRegistrationDto registeredUserRegistrationDto){
         Boolean loginExists = registeredUserRepository.existsByLogin(registeredUserRegistrationDto.login());
         Boolean mailExists = registeredUserRepository.existsByMail(registeredUserRegistrationDto.mail());
@@ -78,6 +80,7 @@ public class RegisteredUserService implements UserDetailsService{
                         "No registered user present with id: "+id));
     }
 
+    @Transactional
     public RegisteredUser updateRegisteredUser(RegisteredUserDto registeredUserDto) {
         RegisteredUser registeredUser = registeredUserRepository.findById(registeredUserDto.id())
                 .orElseThrow(() -> new NoSuchRegisteredUserException(
@@ -113,6 +116,7 @@ public class RegisteredUserService implements UserDetailsService{
             registeredUserRepository.deleteById(id);
     }
 
+    @Transactional
     public void activateRegisteredUser(RegisteredUserActivationDto registeredUserActivationDto) {
         RegisteredUser registeredUser = registeredUserRepository.findById(registeredUserActivationDto.id())
                 .orElseThrow(() -> new NoSuchRegisteredUserException(
@@ -123,6 +127,7 @@ public class RegisteredUserService implements UserDetailsService{
         registeredUserRepository.save(registeredUser);
     }
 
+    @Transactional
     public void changePassword(RegisteredUserChangePasswordDto registeredUserChangePasswordDto) {
         RegisteredUser registeredUser = registeredUserRepository
                 .findById(registeredUserChangePasswordDto.id())

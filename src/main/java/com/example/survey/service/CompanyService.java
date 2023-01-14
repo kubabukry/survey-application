@@ -14,6 +14,7 @@ import com.example.survey.repository.RegisteredUserRepository;
 import com.example.survey.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +32,7 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    //todo po implementacji logowania bedzie pobieralo zalogowanego usera jako wlascicela danej firmy
-    //poki co trzeba manulanie podac id, wtedy bedzie przypisywalo tego ktory utworzyl po zalogowaniu
-    //todo teraz jeden user moze posiadac jedna firme, czy tak powinno byc?
-    //nie ma na to wyjatku poki co bo nie wiem czy jest potrzebny
+    @Transactional
     public Company createCompany(CompanyCreationDto companyCreationDto) {
         Boolean nameExists = companyRepository.existsByName(companyCreationDto.name());
         Boolean nipExists = companyRepository.existsByNip(companyCreationDto.nip());
@@ -60,8 +58,8 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    //todo utworzyc CompanyUpdateDto bez podawania isVerified? bez sensu powielanie tego w verifyCompany
     //dodatkowo user nie powinien miec mozliwosci weryfikacji firmy tylko admin/moderator
+    @Transactional
     public Company updateCompany(CompanyDto companyDto) {
         Company company = companyRepository.findById(companyDto.id())
                 .orElseThrow(() -> new NoSuchCompanyExistsException(
@@ -94,6 +92,7 @@ public class CompanyService {
                 .orElseThrow(() -> new NoSuchCompanyExistsException("No such company with id = "+id));
     }
 
+    @Transactional
     public void verifyCompany(CompanyVerificationDto companyVerificationDto) {
         Company company = companyRepository.findById(companyVerificationDto.id())
                 .orElseThrow(() -> new NoSuchCompanyExistsException(
@@ -119,6 +118,17 @@ public class CompanyService {
                         .getCompanySurvey()
                         .forEach(companySurvey -> companies.add(companySurvey.getCompany())));
         return companies;
+    }
+
+    public Company getCompanyByUser(Long id) {
+        RegisteredUser registeredUser = registeredUserRepository.findById(id)
+                .orElseThrow(() -> new NoSuchRegisteredUserException("No such user with id: "+id+" exists"));
+        Boolean userHasCompany = registeredUser.getRole().getName().equals("company");
+        if(!userHasCompany)
+            throw new NoSuchCompanyExistsException("This user with id: "+id+" has no company");
+
+        Company company = companyRepository.findByIdUser(registeredUser);
+        return company;
     }
 
 
