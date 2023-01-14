@@ -78,7 +78,7 @@ public class RegisteredUserController {
     }
 
     @PostMapping("/v2/login")
-    public LoginDto loginUser(@RequestParam("username") String login, @RequestParam("password") String password){
-        return registeredUserService.loginUser(login, password);
+    public LoginResponseDto loginUser(@RequestBody LoginDto loginDto){
+        return registeredUserService.loginUser(loginDto.username(), loginDto.password());
     }
 }

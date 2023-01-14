@@ -14,10 +14,7 @@ import com.example.survey.repository.RegisteredUserRepository;
 import com.example.survey.repository.RoleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -200,7 +196,7 @@ public class RegisteredUserService implements UserDetailsService{
         return registeredUser;
     }
 
-    public LoginDto loginUser(String login, String password) {
+    public LoginResponseDto loginUser(String login, String password) {
         Boolean existsByLogin = registeredUserRepository.existsByLogin(login);
         if(!existsByLogin)
             throw new NoSuchRegisteredUserException("No such registered user with login: "+login+" exists");
@@ -215,8 +211,8 @@ public class RegisteredUserService implements UserDetailsService{
         if(roleName.equals("company"))
             isCompany = true;
 
-        LoginDto loginDto = new LoginDto(login, roleName, isCompany);
-        return loginDto;
+        LoginResponseDto loginResponseDto = new LoginResponseDto(registeredUser.getId().toString(), login, roleName, isCompany);
+        return loginResponseDto;
     }
 
 
