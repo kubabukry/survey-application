@@ -2,14 +2,19 @@ package com.example.survey.service;
 
 import com.example.survey.dto.CategoryCreationDto;
 import com.example.survey.dto.CategoryDto;
+import com.example.survey.dto.CategoryScoreDto;
 import com.example.survey.exception.CategoryAlreadyExistsException;
 import com.example.survey.exception.NoSuchCategoryExistsException;
 import com.example.survey.model.Category;
+import com.example.survey.model.CompanySurvey;
+import com.example.survey.model.SurveyTemplate;
 import com.example.survey.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +62,18 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
+//    public List<CategoryScoreDto> getCategoryScore(Long id) {
+//        Category category = categoryRepository.findById(id)
+//                .orElseThrow(() ->new NoSuchCategoryExistsException("No such category with id: "+id+" exists"));
+//
+//        List<Long> idTemplateList = category.getSurveyTemplateList()
+//                .stream()
+//                .map(surveyTemplate -> surveyTemplate.getId())
+//                .collect(Collectors.toList());
+//
+//        List<CategoryScoreDto> categoryScoreDtoList = new ArrayList<>();
+//
+//    }
 
 
     //getCategoryById() +

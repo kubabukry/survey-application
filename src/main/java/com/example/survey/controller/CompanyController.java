@@ -50,6 +50,11 @@ public class CompanyController {
         companyService.deleteCompany(id);
     }
 
+    @GetMapping("/companies/users/{id}")
+    public CompanyDto getCompanyByUser(@PathVariable Long id){
+        return mapCompanyToCompanyDto(companyService.getCompanyByUser(id));
+    }
+
     @GetMapping("/companies/category/{categoryId}")
         public List<CompanyDto> getCompaniesCategory(@PathVariable Long categoryId){
             return mapCompanyListToCompanyDtoList(companyService.getCompaniesByCategoryId(categoryId));
