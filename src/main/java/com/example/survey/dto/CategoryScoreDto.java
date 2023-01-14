@@ -1,6 +1,12 @@
 package com.example.survey.dto;
 
-public record CategoryScoreDto(String companyName,
-                               Long idTemplate,
-                               String score) {
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class CategoryScoreDto {
+    private String companyName;
+    private Long idTemplate;
+    private String score;
 }
