@@ -4,10 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.survey.dto.RegisteredUserActivationDto;
-import com.example.survey.dto.RegisteredUserChangePasswordDto;
-import com.example.survey.dto.RegisteredUserDto;
-import com.example.survey.dto.RegisteredUserRegistrationDto;
+import com.example.survey.dto.*;
 import com.example.survey.exception.LoginAlreadyInUseException;
 import com.example.survey.exception.MailAlreadyInUseException;
 import com.example.survey.exception.NoSuchRegisteredUserException;
@@ -196,6 +193,25 @@ public class RegisteredUserService implements UserDetailsService{
             throw new NoSuchRegisteredUserException("No such registered user with login: "+login+" exists");
         RegisteredUser registeredUser = registeredUserRepository.findByLogin(login);
         return registeredUser;
+    }
+
+    public LoginDto loginUser(String login, String password) {
+        Boolean existsByLogin = registeredUserRepository.existsByLogin(login);
+        if(!existsByLogin)
+            throw new NoSuchRegisteredUserException("No such registered user with login: "+login+" exists");
+        RegisteredUser registeredUser = registeredUserRepository.findByLogin(login);
+
+        Boolean passwordCorrect = passwordEncoder.matches(password, registeredUser.getPassword());
+        if(!passwordCorrect)
+            throw new NoSuchRegisteredUserException("Wrong password");
+
+        String roleName = registeredUser.getRole().getName();
+        Boolean isCompany = false;
+        if(roleName.equals("company"))
+            isCompany = true;
+
+        LoginDto loginDto = new LoginDto(login, roleName, isCompany);
+        return loginDto;
     }
 
 
