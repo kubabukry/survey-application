@@ -1,9 +1,6 @@
 package com.example.survey.controller;
 
-import com.example.survey.dto.RegisteredUserActivationDto;
-import com.example.survey.dto.RegisteredUserChangePasswordDto;
-import com.example.survey.dto.RegisteredUserDto;
-import com.example.survey.dto.RegisteredUserRegistrationDto;
+import com.example.survey.dto.*;
 import com.example.survey.service.RegisteredUserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -78,5 +75,10 @@ public class RegisteredUserController {
     @GetMapping("/users/details/{login}")
     public RegisteredUserDto getUserDetails(@PathVariable String login){
         return mapRegisteredUserToRegisteredUserDto(registeredUserService.getUserDetails(login));
+    }
+
+    @PostMapping("/v2/login")
+    public LoginDto loginUser(@RequestParam("username") String login, @RequestParam("password") String password){
+        return registeredUserService.loginUser(login, password);
     }
 }
