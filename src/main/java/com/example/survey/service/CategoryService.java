@@ -6,6 +6,7 @@ import com.example.survey.dto.CategoryScoreDto;
 import com.example.survey.exception.CategoryAlreadyExistsException;
 import com.example.survey.exception.NoSuchCategoryExistsException;
 import com.example.survey.model.Category;
+import com.example.survey.model.Company;
 import com.example.survey.model.CompanySurvey;
 import com.example.survey.model.SurveyTemplate;
 import com.example.survey.repository.CategoryRepository;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+
+    private final StatisticsService statisticsService;
 
     //brak potrzeby obslugi wyjatkow
     public List<Category> getCategories() {
@@ -62,18 +65,25 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-//    public List<CategoryScoreDto> getCategoryScore(Long id) {
-//        Category category = categoryRepository.findById(id)
-//                .orElseThrow(() ->new NoSuchCategoryExistsException("No such category with id: "+id+" exists"));
-//
-//        List<Long> idTemplateList = category.getSurveyTemplateList()
-//                .stream()
-//                .map(surveyTemplate -> surveyTemplate.getId())
-//                .collect(Collectors.toList());
-//
-//        List<CategoryScoreDto> categoryScoreDtoList = new ArrayList<>();
-//
-//    }
+    public List<CategoryScoreDto> getCategoryScore(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() ->new NoSuchCategoryExistsException("No such category with id: "+id+" exists"));
+
+        List<SurveyTemplate> surveyTemplateList = category.getSurveyTemplateList();
+        List<CompanySurvey> companySurveyList = new ArrayList<>();
+        surveyTemplateList
+                .stream()
+                .forEach(surveyTemplate -> companySurveyList.addAll(surveyTemplate.getCompanySurvey()));
+
+        return companySurveyList
+                .stream()
+                .map(companySurvey -> CategoryScoreDto.builder()
+                        .companyName(companySurvey.getCompany().getName())
+                        .idTemplate(companySurvey.getSurveyTemplate().getId())
+                        .score(statisticsService.getAverageScoreForCompanySurvey(companySurvey.getId()))
+                        .build())
+                .collect(Collectors.toList());
+    }
 
 
     //getCategoryById() +
