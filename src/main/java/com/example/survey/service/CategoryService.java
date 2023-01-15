@@ -6,7 +6,6 @@ import com.example.survey.dto.CategoryScoreDto;
 import com.example.survey.exception.CategoryAlreadyExistsException;
 import com.example.survey.exception.NoSuchCategoryExistsException;
 import com.example.survey.model.Category;
-import com.example.survey.model.Company;
 import com.example.survey.model.CompanySurvey;
 import com.example.survey.model.SurveyTemplate;
 import com.example.survey.repository.CategoryRepository;
@@ -79,7 +78,7 @@ public class CategoryService {
                 .stream()
                 .map(companySurvey -> CategoryScoreDto.builder()
                         .companyName(companySurvey.getCompany().getName())
-                        .idTemplate(companySurvey.getSurveyTemplate().getId())
+                        .companySurveyId(companySurvey.getId())
                         .score(statisticsService.getAverageScoreForCompanySurvey(companySurvey.getId()))
                         .build())
                 .collect(Collectors.toList());

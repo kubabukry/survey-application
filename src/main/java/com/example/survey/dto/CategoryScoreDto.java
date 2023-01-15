@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class CategoryScoreDto {
     private String companyName;
-    private Long idTemplate;
+    private Long companySurveyId;
     private String score;
 }
